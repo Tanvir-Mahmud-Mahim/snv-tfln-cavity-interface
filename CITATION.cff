@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the article below."
+title: "snv-tfln-cavity-interface: open-source design pipeline for an
+  integrated SnV-TFLN spin-photon interface"
+authors:
+  - family-names: Mahim
+    given-names: Tanvir M.
+    affiliation: BRAC University
+  - family-names: Rahman
+    given-names: M. Mosaddequr
+    affiliation: BRAC University
+  - family-names: Mohsin
+    given-names: Abu S. M.
+    affiliation: BRAC University
+license: Apache-2.0
+repository-code: "https://github.com/Tanvir-Mahmud-Mahim/snv-tfln-cavity-interface"
+preferred-citation:
+  type: article
+  title: "Overcoupled diamond nanobeam cavities on thin-film lithium
+    niobate for fast single-shot readout of tin-vacancy spins"
+  authors:
+    - family-names: Mahim
+      given-names: Tanvir M.
+    - family-names: Rahman
+      given-names: M. Mosaddequr
+    - family-names: Mohsin
+      given-names: Abu S. M.
+  journal: "Optics Express (submitted)"
+  year: 2026

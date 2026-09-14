@@ -1,0 +1,13 @@
+{
+  "title": "snv-tfln-cavity-interface: open-source design pipeline for an integrated SnV-TFLN spin-photon interface",
+  "upload_type": "software",
+  "license": "Apache-2.0",
+  "creators": [
+    {"name": "Mahim, Tanvir M.", "affiliation": "BRAC University"},
+    {"name": "Rahman, M. Mosaddequr", "affiliation": "BRAC University"},
+    {"name": "Mohsin, Abu S. M.", "affiliation": "BRAC University"}
+  ],
+  "keywords": ["tin-vacancy center", "diamond nanophotonics",
+    "thin-film lithium niobate", "Purcell enhancement",
+    "single-shot readout", "guided-mode expansion", "open source"]
+}
