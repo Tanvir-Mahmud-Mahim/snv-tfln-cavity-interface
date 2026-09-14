@@ -16,8 +16,7 @@ license: Apache-2.0
 repository-code: "https://github.com/Tanvir-Mahmud-Mahim/snv-tfln-cavity-interface"
 preferred-citation:
   type: article
-  title: "Overcoupled diamond nanobeam cavities on thin-film lithium
-    niobate for fast single-shot readout of tin-vacancy spins"
+  title: "Fast single-shot readout of tin-vacancy spins with an overcoupled diamond nanocavity on thin-film lithium niobate"
   authors:
     - family-names: Mahim
       given-names: Tanvir M.

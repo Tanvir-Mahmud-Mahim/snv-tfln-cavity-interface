@@ -7,13 +7,13 @@ the way to predicted single-shot spin-readout fidelity.
 
 Companion code for the article:
 
-> T. M. Mahim, M. M. Rahman, and A. S. M. Mohsin, "Overcoupled diamond
-> nanobeam cavities on thin-film lithium niobate for fast single-shot readout
-> of tin-vacancy spins" (submitted to Optics Express, 2026).
+> T. M. Mahim, M. M. Rahman, and A. S. M. Mohsin, "Fast single-shot readout of
+> tin-vacancy spins with an overcoupled diamond nanocavity on thin-film
+> lithium niobate" (submitted to Optics Express, 2026).
 
 The raw simulation outputs, the validation testbench with reference logs, and
 a frozen copy of this code are archived on Zenodo:
-https://doi.org/10.5281/zenodo.22756033
+https://doi.org/10.5281/zenodo.22758086
 
 ## What the pipeline does
 
@@ -38,8 +38,10 @@ https://doi.org/10.5281/zenodo.22756033
    design point (Q_L ~ 500, F_C ~ 19, eta ~ 65%, F_r = 98.5% in 0.1 us).
 6. **Verification** (`sim/checks.py`) - the 15-check testbench
    (all pass; writes `results/verification.json`).
-7. **Figures / numbers** (`figures/make_figures.py`, `sim/make_numbers.py`) -
-   regenerate every figure and every number quoted in the article.
+7. **Figures / numbers** (`figures/make_figures.py`,
+   `figures/fig1_device.py`, `sim/make_numbers.py`) - regenerate every
+   figure (including the 3D device schematic of Fig. 1) and every number
+   quoted in the article.
 
 ## Quick start
 
@@ -49,8 +51,13 @@ python sim/materials.py          # material sanity check
 python sim/snv.py                # spin-model validation numbers
 python sim/interface.py          # design point + readout predictions
 python sim/checks.py             # full 15-check testbench
-python figures/make_figures.py   # all figures (needs results/, see Zenodo)
+python figures/make_figures.py   # Figs. 2-5 (needs results/, see Zenodo)
+python figures/fig1_device.py    # Fig. 1 device schematic
 ```
+
+Figure text uses Times New Roman when the TTF files are placed in
+`figures/fonts/` (the fonts are proprietary and not distributed here);
+otherwise matplotlib falls back to its default serif font.
 
 The heavy solves (GME cavity, FEM/EME taper) take minutes to tens of minutes
 each; their outputs are archived in the Zenodo dataset so that the figures
