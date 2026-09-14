@@ -30,9 +30,9 @@ import numpy as np
 
 DATA_DIR = pathlib.Path(__file__).resolve().parent / "data"
 
-# SnV zero-phonon-line wavelength (um).  Rugar et al., Phys. Rev. B 99,
-# 205417 (2019) report the C and D transitions at 619.0263 nm and
-# 620.1757 nm; Rosenthal et al. (2023/2024) operate near 619 nm.
+# SnV zero-phonon-line wavelength (um).  The C and D transitions lie
+# near 619-620 nm (Rugar et al., Phys. Rev. B 99, 205417 (2019));
+# Rosenthal et al., PRX 14, 041008 (2024) operate at 619.140 nm.
 LAMBDA_SNV_UM = 0.619
 
 

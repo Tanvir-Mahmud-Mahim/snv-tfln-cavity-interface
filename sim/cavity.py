@@ -189,3 +189,47 @@ if __name__ == "__main__":
         edge = fr[-1, :4]
         print(f"a={a} nm  band-edge f(c/a)={np.round(edge, 4)}  "
               f"-> lam_edge={np.round(a/edge,1)} nm", flush=True)
+
+def classify_te_edges(a_nm: float, gmax: float = 4.0, save: bool = True):
+    """Field-classified TE band edges of the mirror cell at the zone edge.
+
+    Runs the mirror-cell GME at k_x = pi with gmode_inds (0,1,2), inspects
+    each zone-edge mode at the slab mid-plane, and identifies the TE
+    dielectric-band edge (E_y-dominant, intensity concentrated in the
+    dielectric between holes) and the TE air-band edge (E_y-dominant,
+    intensity concentrated in the holes).  Returns a dict and, if
+    ``save``, caches it in results/band_edges.json.
+    """
+    import legume as _lg
+    phc = mirror_cell(a_nm)
+    gme = _lg.GuidedModeExp(phc, gmax=gmax)
+    gme.run(kpoints=np.array([[np.pi], [0.0]]), gmode_inds=[0, 1, 2],
+            numeig=10, compute_im=False, verbose=False,
+            eps_eff="background")
+    fr = np.array(gme.freqs[0])
+    t_rel = 200.0 / a_nm
+    w2 = 280.0 / a_nm / 2
+    xs = np.linspace(-0.5, 0.5, 48, endpoint=False)
+    ys = np.linspace(-2, 2, 96, endpoint=False)
+    f_diel = f_air = None
+    for mi in range(len(fr)):
+        fld, _, _ = gme.get_field_xy("e", kind=0, mind=mi, z=t_rel / 2,
+                                     xgrid=xs, ygrid=ys)
+        E2 = sum(np.abs(fld[c]) ** 2 for c in "xyz")
+        px = E2.sum(axis=0)
+        at_hole = px[np.abs(xs) < 0.25].sum()
+        at_diel = px[np.abs(xs) > 0.25].sum()
+        ey = np.sum(np.abs(fld["y"]) ** 2) / np.sum(E2)
+        if ey > 0.5 and at_diel > at_hole and f_diel is None:
+            f_diel = float(fr[mi])
+        elif ey > 0.5 and at_hole > at_diel and f_air is None:
+            f_air = float(fr[mi])
+        if f_diel is not None and f_air is not None:
+            break
+    out = dict(a_nm=a_nm, gmax=gmax, f_diel_ca=f_diel, f_air_ca=f_air,
+               lam_diel_nm=a_nm / f_diel, lam_air_nm=a_nm / f_air)
+    if save:
+        import json as _json
+        (RESULTS / "band_edges.json").write_text(_json.dumps(out, indent=1))
+    return out
+
