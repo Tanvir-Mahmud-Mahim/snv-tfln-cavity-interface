@@ -40,7 +40,7 @@ https://doi.org/10.5281/zenodo.22758086
    (all pass; writes `results/verification.json`).
 7. **Figures / numbers** (`figures/make_figures.py`,
    `figures/fig1_device.py`, `sim/make_numbers.py`) - regenerate every
-   figure (including the 3D device schematic of Fig. 1) and every number
+   figure (including the Fig. 1 device schematic) and every number
    quoted in the article.
 
 ## Quick start
