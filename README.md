@@ -13,7 +13,7 @@ Companion code for the article:
 
 The raw simulation outputs, the validation testbench with reference logs, and
 a frozen copy of this code are archived on Zenodo:
-https://doi.org/10.5281/zenodo.XXXXXXXX
+https://doi.org/10.5281/zenodo.22756033
 
 ## What the pipeline does
 
