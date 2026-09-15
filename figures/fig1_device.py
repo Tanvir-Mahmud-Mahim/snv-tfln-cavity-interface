@@ -75,9 +75,9 @@ def panel_top(ax):
                 arrowprops=dict(arrowstyle="-|>", lw=1.2,
                                 color=OI["vermilion"]), zorder=8)
     # static field B
-    ax.annotate("", xy=(1.35, 0.92), xytext=(0.65, 0.45),
+    ax.annotate("", xy=(1.35, 1.02), xytext=(0.65, 0.58),
                 arrowprops=dict(arrowstyle="-|>", lw=1.1, color="k"))
-    ax.text(1.48, 0.92, "$B$", fontsize=8, va="center")
+    ax.text(1.48, 1.02, "$B$", fontsize=8, va="center")
     # region of interest (magnified below)
     ax.add_patch(Rectangle((2.3, yc-0.33), 4.1, 0.66, fill=False,
                            ec="#777777", lw=0.7, ls=(0, (3, 2)), zorder=9))
@@ -86,7 +86,7 @@ def panel_top(ax):
     _lead(ax, (7.1, 2.55), (6.9, yc+0.07), "adiabatic taper")
     _lead(ax, (8.6, 0.68), (8.6, yc-0.24), "TFLN bus, 600 nm")
     _lead(ax, (10.35, 2.55), (10.55, yc+0.38), "detector")
-    ax.text(0.22, 0.30, "SiO$_2$", fontsize=7.5, color="#666666")
+    ax.text(0.22, 0.22, "SiO$_2$", fontsize=7.5, color="#666666")
     ax.text(10.85, 0.10, "top view, not to scale", fontsize=6,
             color="#999999", ha="right")
 
@@ -96,34 +96,34 @@ def panel_side(ax):
     ax.set_xlim(0, 11); ax.set_ylim(-0.02, 1.35)
     ax.set_aspect("equal"); ax.axis("off")
     # SiO2 substrate
-    ax.add_patch(Rectangle((0, 0), 11, 0.35, fc=SUB, ec="k", lw=0.5))
+    ax.add_patch(Rectangle((0, 0), 11, 0.46, fc=SUB, ec="k", lw=0.5))
     # TFLN film (fully etched ridge, 190 nm)
-    ax.add_patch(Rectangle((6.05, 0.35), 4.25, 0.19, fc=LN, ec="k", lw=0.5))
+    ax.add_patch(Rectangle((6.05, 0.46), 4.25, 0.19, fc=LN, ec="k", lw=0.5))
     # diamond beam (200 nm): on SiO2, ramping onto the LN ridge
-    beam = Polygon([(0.4, 0.35), (6.05, 0.35), (6.4, 0.54), (8.0, 0.54),
-                    (8.0, 0.74), (6.4, 0.74), (6.05, 0.55), (0.4, 0.55)],
+    beam = Polygon([(0.4, 0.46), (6.05, 0.46), (6.4, 0.65), (8.0, 0.65),
+                    (8.0, 0.85), (6.4, 0.85), (6.05, 0.66), (0.4, 0.66)],
                    closed=True, fc=DIA, ec="k", lw=0.5, zorder=5)
     ax.add_patch(beam)
     # holes appear as through-thickness slots in side view
     xs, rr, x_cav = overview_holes()
     for xh, r in zip(xs, rr):
-        ax.add_patch(Rectangle((xh-r, 0.356), 2*r, 0.188, fc="white",
+        ax.add_patch(Rectangle((xh-r, 0.466), 2*r, 0.188, fc="white",
                                ec="k", lw=0.25, zorder=6))
-    ax.plot([x_cav], [0.45], marker="*", ms=6, color=OI["vermilion"],
+    ax.plot([x_cav], [0.56], marker="*", ms=6, color=OI["vermilion"],
             markeredgecolor="k", markeredgewidth=0.4, zorder=7)
     # detector block on the bus
-    ax.add_patch(Rectangle((10.3, 0.54), 0.55, 0.42, fc=DET, ec="k",
+    ax.add_patch(Rectangle((10.3, 0.65), 0.55, 0.42, fc=DET, ec="k",
                            lw=0.5))
     # labels
-    ax.text(1.7, 1.05, "diamond, 200 nm", fontsize=7, ha="center",
+    ax.text(1.7, 1.13, "diamond, 200 nm", fontsize=7, ha="center",
             va="center")
-    ax.plot([1.7, 1.7], [0.87, 0.555], color="#999999", lw=0.7)
-    ax.text(8.7, 1.05, "TFLN film, 190 nm", fontsize=7, ha="center",
+    ax.plot([1.7, 1.7], [0.95, 0.665], color="#999999", lw=0.7)
+    ax.text(8.7, 1.13, "TFLN film, 190 nm", fontsize=7, ha="center",
             va="center")
-    ax.plot([8.8, 8.9], [0.87, 0.545], color="#999999", lw=0.7)
-    ax.text(0.22, 0.175, "SiO$_2$", fontsize=7, color="#666666",
+    ax.plot([8.8, 8.9], [0.95, 0.655], color="#999999", lw=0.7)
+    ax.text(0.22, 0.23, "SiO$_2$", fontsize=7, color="#666666",
             va="center")
-    ax.text(10.15, 0.175, "side view, not to scale", fontsize=6,
+    ax.text(10.15, 0.23, "side view, not to scale", fontsize=6,
             color="#999999", ha="right", va="center")
 
 

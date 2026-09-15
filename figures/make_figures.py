@@ -72,8 +72,8 @@ def fig2():
         te0l.append(max(cands) if cands else np.nan)
     ax.plot(wl, te0l, color=OI["vermilion"], label="TFLN ridge TE$_0$")
     ax.axhline(1.4574, color=OI["grey"], lw=0.7, ls=":")
-    ax.text(640, 1.468, "SiO$_2$ light line", color=OI["grey"], fontsize=7,
-            ha="right",
+    ax.text(640, 1.4574, "SiO$_2$ light line", color=OI["grey"], fontsize=7,
+            ha="right", va="center",
             bbox=dict(boxstyle="square,pad=0.10", fc="white", ec="none"))
     ax.axvline(280, color=OI["blue"], lw=0.7, ls="--", alpha=0.5)
     ax.axvline(600 * 0.66, color="none")
@@ -92,10 +92,10 @@ def fig2():
         ax.plot(bw, bn[:, i], color=cols[i], lw=1.1)
     ends = bn[0]
     starts = bn[-1]
-    ax.text(58, ends[0] - 0.010, "TE branch", color=cols[0],
-            fontsize=7, ha="right", va="top")
-    ax.text(58, ends[1] - 0.012, "TM branch", color=cols[1],
-            fontsize=7, ha="right", va="top")
+    ax.text(120, 2.045, "TE branch", color=cols[0],
+            fontsize=7, ha="center", va="bottom")
+    ax.text(200, 1.930, "TM branch", color=cols[1],
+            fontsize=7, ha="center", va="center")
     ax.text(58, ends[2] - 0.012, "LN TE$_1$", color=cols[2],
             fontsize=7, ha="right", va="top")
     ax.text(bw[-1], 1.790, "LN TM$_0$", color=cols[3],
@@ -154,7 +154,7 @@ def fig3():
                       alpha=0.85))
     f_c = a / prod["lam_nm"]
     ax.axhline(f_c, color=OI["vermilion"], lw=1.0)
-    ax.text(0.05, f_c + 0.007, "cavity mode (618.7 nm)",
+    ax.text(0.05, f_c + 0.007, "cavity mode",
             color=OI["vermilion"], fontsize=7, va="bottom",
             bbox=dict(boxstyle="square,pad=0.15", fc="white", ec="none",
                       alpha=0.85))
@@ -210,9 +210,9 @@ def fig4():
     ax.errorbar([53], [8.6], yerr=[0.4], fmt="o", color=OI["vermilion"], ms=4,
                 capsize=2)
     ax.text(30, 700, "model", color=OI["blue"], fontsize=7, ha="left")
-    ax.annotate("out-of-plane\nalignment, see (b)", xy=(147, 2244),
-                xytext=(185, 300), fontsize=6.5,
-                arrowprops=dict(arrowstyle="->", lw=0.6, shrinkB=4))
+    ax.text(185, 300, "out-of-plane\nalignment, see (b)", fontsize=6.5)
+    ax.annotate("", xy=(152, 1700), xytext=(179, 800),
+                arrowprops=dict(arrowstyle="->", lw=0.6))
     ax.set_ylim(3.5, 8e3)
     ax.set_xlabel("field angle $\\zeta$ (deg)")
     ax.set_ylabel("cyclicity $\\Lambda$")
