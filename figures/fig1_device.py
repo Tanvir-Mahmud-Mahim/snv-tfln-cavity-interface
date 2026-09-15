@@ -20,7 +20,7 @@ SUB = "#f0f0f0"      # SiO2
 DET = "#3f3f3f"      # detector
 
 
-def _lead(ax, xytext, xy, s, fs=6.4, color="k", ha="center", va="center",
+def _lead(ax, xytext, xy, s, fs=7, color="k", ha="center", va="center",
           leader=True):
     """Upright label with an optional thin leader line to its feature."""
     arr = dict(arrowstyle="-", lw=0.5, color="#999999",
@@ -86,8 +86,8 @@ def panel_top(ax):
     _lead(ax, (7.1, 2.55), (6.9, yc+0.07), "adiabatic taper")
     _lead(ax, (8.6, 0.52), (8.6, yc-0.24), "TFLN bus, 600 nm")
     _lead(ax, (10.35, 2.55), (10.55, yc+0.38), "detector")
-    ax.text(0.22, 0.30, "SiO$_2$", fontsize=7, color="#666666")
-    ax.text(10.85, 0.22, "top view, not to scale", fontsize=5.4,
+    ax.text(0.22, 0.30, "SiO$_2$", fontsize=7.5, color="#666666")
+    ax.text(10.85, 0.22, "top view, not to scale", fontsize=6,
             color="#999999", ha="right")
 
 
@@ -117,8 +117,8 @@ def panel_side(ax):
     # labels
     _lead(ax, (1.7, 1.05), (1.7, 0.57), "diamond, 200 nm")
     _lead(ax, (8.7, 1.05), (8.9, 0.56), "TFLN film, 190 nm")
-    ax.text(0.22, 0.10, "SiO$_2$", fontsize=7, color="#666666")
-    ax.text(10.15, 0.10, "side view, not to scale", fontsize=5.4,
+    ax.text(0.22, 0.10, "SiO$_2$", fontsize=7.5, color="#666666")
+    ax.text(10.15, 0.10, "side view, not to scale", fontsize=6,
             color="#999999", ha="right")
 
 
@@ -156,7 +156,7 @@ def panel_zoom(ax):
                 arrowprops=dict(arrowstyle="-|>", lw=1.2,
                                 color=OI["green"]), zorder=7,
                 annotation_clip=False)
-    ax.text(13.35, yc + 0.45, "to bus", fontsize=6.2, color=OI["green"],
+    ax.text(13.35, yc + 0.45, "to bus", fontsize=6.8, color=OI["green"],
             ha="right")
     # region brackets above the beam
     def bracket(x0, x1, label, ty=2.30):
@@ -164,25 +164,23 @@ def panel_zoom(ax):
         ax.plot([x0, x1], [yb, yb], color="k", lw=0.7)
         ax.plot([x0, x0], [yb-0.12, yb], color="k", lw=0.7)
         ax.plot([x1, x1], [yb-0.12, yb], color="k", lw=0.7)
-        ax.text((x0+x1)/2, ty, label, fontsize=6.2, ha="center",
+        ax.text((x0+x1)/2, ty, label, fontsize=6.8, ha="center",
                 va="top")
     bracket(0.1, 2.30, "mirror, $N = 10$")
     bracket(2.42, 9.86, "quadratic taper, $a \\rightarrow 0.86a$")
-    bracket(9.98, 11.35, "output\n$Q_L \\approx 500$", ty=2.62)
+    bracket(9.98, 11.35, "output, $Q_L \\approx 500$")
     # lattice-constant dimension between two mirror holes
     for xe in (xs[1], xs[2]):
         ax.plot([xe, xe], [yc - 0.16, 0.38], color="#777777", lw=0.5)
-    ax.annotate("", xy=(xs[2], 0.44), xytext=(xs[1], 0.44),
-                arrowprops=dict(arrowstyle="<|-|>", lw=0.7,
-                                color="#333333", mutation_scale=6))
-    ax.text((xs[1]+xs[2])/2, 0.26, "$a = 194$ nm", fontsize=6.2,
+    ax.plot([xs[1], xs[2]], [0.44, 0.44], color="#333333", lw=0.8)
+    ax.text((xs[1]+xs[2])/2, 0.26, "$a = 194$ nm", fontsize=6.8,
             ha="center", va="top")
     # hole radius
     _lead(ax, (4.1, 0.02), (xs[3] + 0.12, yc - 0.16), "$r = 0.30a$",
-          fs=6.2, va="top")
+          fs=7, va="top")
     # emitter label
     _lead(ax, (7.9, 0.02), (x_cav + 0.12, yc - 0.24), "SnV$^-$ spin",
-          fs=6.4, color=OI["vermilion"], va="top")
+          fs=7, color=OI["vermilion"], va="top")
 
 
 def panel_b(ax):
@@ -200,7 +198,7 @@ def panel_b(ax):
     # qubit splitting bracket next to the |up> line start
     ax.annotate("", xy=(0.315, y2), xytext=(0.315, y1),
                 arrowprops=dict(arrowstyle="<->", lw=0.7))
-    ax.text(0.30, (y1+y2)/2, "$\\omega_q$ ", fontsize=7, ha="right",
+    ax.text(0.275, (y1+y2)/2, "$\\omega_q$", fontsize=7, ha="right",
             va="center")
     # spin-conserving C1 (cavity-enhanced), clear of the |up> line
     ax.add_patch(FancyArrowPatch((0.195, y1), (0.195, yC),
@@ -209,44 +207,47 @@ def panel_b(ax):
     ax.text(0.175, 0.56, "C$_1$", fontsize=7.5, color=OI["vermilion"],
             ha="right")
     # cavity line profile beside C1
-    yy = np.linspace(0.40, 0.80, 120)
-    lor = 0.075 / (1 + ((yy - 0.60) / 0.085) ** 2)
+    yy = np.linspace(0.50, 0.84, 120)
+    lor = 0.075 / (1 + ((yy - 0.67) / 0.085) ** 2)
     ax.plot(0.395 + lor, yy, color=OI["green"], lw=1.2)
-    ax.text(0.245, 0.345, "cavity ($F_C = 19$)", fontsize=6.2,
+    ax.text(0.36, 0.43, "cavity", fontsize=6.5, ha="center",
+            color=OI["green"])
+    ax.text(0.36, 0.34, "$F_C = 19$", fontsize=6.5, ha="center",
             color=OI["green"])
     # weak spin-flipping C2
     ax.add_patch(FancyArrowPatch((0.54, y2), (0.54, yC), arrowstyle="-|>",
                  mutation_scale=7, lw=1.0, color=OI["grey"],
                  linestyle=(0, (3, 2))))
     ax.text(0.565, 0.50, "C$_2$ (weak,\n$\\propto 1/\\Lambda_0$)",
-            fontsize=6.2, color=OI["grey"])
+            fontsize=6.8, color=OI["grey"])
     ax.text(0.5, 0.0,
             "$\\gamma_{\\rm cav}=\\zeta\\gamma \\ll \\omega_q$:"
             " readout stays spin-selective",
-            fontsize=6.3, ha="center")
+            fontsize=6.8, ha="center")
     ax.set_xlim(0, 1); ax.set_ylim(-0.03, 1)
 
 
 def panel_c(ax):
     L0 = np.array(frl["Lambda0"])
-    ax.semilogx(L0, 100*np.array(frl["cavity"]), color=OI["green"], lw=1.5,
-                label="this design")
+    ax.semilogx(L0, 100*np.array(frl["cavity"]), color=OI["green"], lw=1.5)
     ax.fill_between(L0, 100*np.array(frl["confocal_002"]),
                     100*np.array(frl["confocal_004"]), color=OI["grey"],
-                    alpha=0.45, lw=0, label="confocal")
-    ax.plot([2244], [87.4], "o", ms=4, color=OI["vermilion"],
-            label="measured")
-    ax.set_xlabel("bare cyclicity $\\Lambda_0$", fontsize=7)
-    ax.set_ylabel("$F_r$ (%)", fontsize=7)
+                    alpha=0.45, lw=0)
+    ax.plot([2244], [87.4], "o", ms=4, color=OI["vermilion"])
+    ax.text(140, 91.5, "this design", color=OI["green"], fontsize=6.5)
+    ax.text(700, 63.5, "confocal", color="#777777", fontsize=6.5,
+            ha="center")
+    ax.text(2244, 80.5, "measured", color=OI["vermilion"], fontsize=6.5,
+            ha="center", va="top")
+    ax.set_xlabel("bare cyclicity $\\Lambda_0$", fontsize=8)
+    ax.set_ylabel("$F_r$ (%)", fontsize=8)
     ax.set_ylim(48, 103)
-    ax.annotate("98.5% in 0.1 µs", xy=(2244, 98.5), xytext=(25, 66),
-                fontsize=6.6, arrowprops=dict(arrowstyle="->", lw=0.6))
-    leg = ax.legend(loc="lower right", fontsize=5.6, frameon=True,
-                    framealpha=1.0, edgecolor="none", facecolor="white")
-    leg.set_zorder(20)
+    ax.annotate("98.5% in 0.1 µs", xy=(2244, 98.5), xytext=(9, 68),
+                fontsize=7, arrowprops=dict(arrowstyle="->", lw=0.6))
 
 
-fig = plt.figure(figsize=(DOUBLE, 2.85))
+
+fig = plt.figure(figsize=(DOUBLE, 2.40))
 gs = fig.add_gridspec(1, 2, width_ratios=[1.8, 1], wspace=0.20,
                       left=0.005, right=0.985, top=0.945, bottom=0.115)
 gsl = gs[0, 0].subgridspec(3, 1, height_ratios=[1.0, 0.44, 0.92],

@@ -18,7 +18,9 @@ OI = dict(black="#000000", orange="#E69F00", skyblue="#56B4E9",
 
 MM = 1 / 25.4
 SINGLE = 85 * MM
-DOUBLE = 175 * MM
+# Full text width of the optica-article class (\linewidth = 379.42 pt),
+# so text placed in figures prints at its nominal point size.
+DOUBLE = 379.41753 / 72.27
 
 def setup():
     mpl.rcParams.update({

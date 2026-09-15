@@ -55,7 +55,7 @@ bn = np.array([b[1] for b in branches])
 
 # ================================================================ Fig 2
 def fig2():
-    fig, axs = plt.subplots(1, 3, figsize=(DOUBLE, 1.95))
+    fig, axs = plt.subplots(1, 3, figsize=(DOUBLE, 1.62))
 
     # (a) mode dispersion: diamond beam on SiO2 and LN ridge
     ax = axs[0]
@@ -72,15 +72,16 @@ def fig2():
         te0l.append(max(cands) if cands else np.nan)
     ax.plot(wl, te0l, color=OI["vermilion"], label="TFLN ridge TE$_0$")
     ax.axhline(1.4574, color=OI["grey"], lw=0.7, ls=":")
-    ax.text(640, 1.468, "SiO$_2$ light line", color=OI["grey"], fontsize=6.5,
+    ax.text(640, 1.468, "SiO$_2$ light line", color=OI["grey"], fontsize=7,
             ha="right")
     ax.axvline(280, color=OI["blue"], lw=0.7, ls="--", alpha=0.5)
     ax.axvline(600 * 0.66, color="none")
     ax.set_xlabel("width (nm)")
     ax.set_ylabel("$n_\\mathrm{eff}$ at 619 nm")
     ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.10),
-              fontsize=6.3)
-    panel_label(ax, "(a)")
+              fontsize=6.5, handlelength=1.1, handletextpad=0.4,
+              borderaxespad=0.2, labelspacing=0.3)
+    panel_label(ax, "(a)", dx=-0.30, dy=1.10)
 
     # (b) hybrid supermode branches vs diamond taper width
     ax = axs[1]
@@ -90,32 +91,31 @@ def fig2():
         ax.plot(bw, bn[:, i], color=cols[i], lw=1.1)
     ends = bn[0]
     ax.text(58, ends[0] - 0.010, "TE branch", color=cols[0],
-            fontsize=5.8, ha="right", va="top")
+            fontsize=7, ha="right", va="top")
     ax.text(58, ends[1] - 0.012, "TM branch", color=cols[1],
-            fontsize=5.8, ha="right", va="top")
+            fontsize=7, ha="right", va="top")
     ax.text(58, ends[2] - 0.012, "LN TE$_1$ (sym.-forb.)",
-            color=cols[2], fontsize=5.8, ha="right", va="top")
+            color=cols[2], fontsize=7, ha="right", va="top")
     ax.text(58, ends[3] + 0.012, "LN TM$_0$", color=cols[3],
-            fontsize=5.8, ha="right", va="bottom")
+            fontsize=7, ha="right", va="bottom")
     ax.set_xlabel("diamond taper width (nm)")
     ax.set_ylabel("supermode $n_\\mathrm{eff}$")
     ax.invert_xaxis()
-    panel_label(ax, "(b)")
+    panel_label(ax, "(b)", dx=-0.26, dy=1.10)
 
     # (c) EME transfer vs taper length
     ax = axs[2]
     L = np.array(eme["lengths"]); T = np.array(eme["T"])
     ax.plot(L, 100 * T, "o-", color=OI["green"], ms=3.5)
     ax.axhline(92, color=OI["grey"], lw=0.8, ls="--")
-    ax.text(19.8, 92.7, "Riedel et al.\n(measured, SiV/737 nm)",
-            color=OI["grey"], fontsize=6.0, ha="right", va="bottom")
-    ax.annotate(f"{100*T[4]:.1f}% at 6 µm", xy=(6, 100 * T[4]),
-                xytext=(7.0, 84.5), fontsize=7,
-                arrowprops=dict(arrowstyle="->", lw=0.7))
+    ax.text(19.8, 92.6, "Riedel et al.", color=OI["grey"], fontsize=7,
+            ha="right", va="bottom")
+    ax.text(6.4, 97.0, f"{100*T[4]:.1f}% at 6 µm", fontsize=7,
+            ha="left", va="top")
     ax.set_xlabel("taper length (µm)")
     ax.set_ylabel("transfer $T$ (%)")
     ax.set_ylim(80, 101)
-    panel_label(ax, "(c)", dx=-0.30)
+    panel_label(ax, "(c)", dx=-0.44, dy=1.10)
 
     fig.tight_layout(w_pad=1.8)
     save(fig, "fig2_waveguide")
@@ -123,7 +123,7 @@ def fig2():
 
 # ================================================================ Fig 3
 def fig3():
-    fig = plt.figure(figsize=(DOUBLE, 2.5))
+    fig = plt.figure(figsize=(DOUBLE, 2.06))
     gs = fig.add_gridspec(2, 3, height_ratios=[1, 1], width_ratios=[1, 1.5, 1])
 
     # (a) mirror band structure (recomputed quickly from saved edges is
@@ -147,11 +147,11 @@ def fig3():
     f_diel, f_air = edges["f_diel_ca"], edges["f_air_ca"]
     ax.fill_between([0, 1], f_diel, f_air, color=OI["yellow"], alpha=0.30,
                     lw=0)
-    ax.text(0.62, 0.345, "TE gap", fontsize=6.5, color=OI["black"])
+    ax.text(0.62, 0.345, "TE gap", fontsize=7, color=OI["black"])
     f_c = a / prod["lam_nm"]
     ax.axhline(f_c, color=OI["vermilion"], lw=1.0)
-    ax.text(0.05, f_c + 0.004, "cavity mode (618.7 nm)",
-            color=OI["vermilion"], fontsize=6.5)
+    ax.text(0.05, f_c + 0.007, "cavity mode (618.7 nm)",
+            color=OI["vermilion"], fontsize=7, va="bottom")
     ax.set_xlabel("$k_x a/\\pi$")
     ax.set_ylabel("frequency $a/\\lambda$")
     ax.set_xlim(0, 1); ax.set_ylim(0.15, 0.42)
@@ -167,7 +167,7 @@ def fig3():
     axb.set_ylim(-0.35, 0.35)
     axb.set_ylabel("y (µm)")
     axb.set_xticklabels([])
-    panel_label(axb, "(b)", dx=-0.09)
+    panel_label(axb, "(b)", dx=-0.26)
     axc = fig.add_subplot(gs[1, 1])
     zs = fld["zs"]
     E2z = fld["E2xz"]
@@ -182,14 +182,9 @@ def fig3():
     ax = fig.add_subplot(gs[:, 2])
     line = fld["E2line"]
     ax.semilogy(xs * a / 1e3, line / line.max(), color=OI["blue"], lw=0.8)
-    D = prod["mirror_decay_D"]
     ax.set_xlabel("x (µm)")
     ax.set_ylabel("$|E|^2$ (norm., y=z=0)")
     ax.set_ylim(1e-5, 2)
-    ax.text(0.03, 0.97,
-            f"mirror decay\n$D = {D:.2f}$/period\n(={10*np.log10(1/D):.1f} dB)",
-            transform=ax.transAxes, fontsize=6.5, va="top",
-            bbox=dict(fc="white", ec="none", alpha=0.85, pad=1))
     panel_label(ax, "(c)")
 
     fig.tight_layout(w_pad=1.6)
@@ -198,25 +193,27 @@ def fig3():
 
 # ================================================================ Fig 4
 def fig4():
-    fig, axs = plt.subplots(1, 3, figsize=(DOUBLE, 1.95))
+    fig, axs = plt.subplots(1, 3, figsize=(DOUBLE, 1.62))
 
     # (a) cyclicity vs field angle + measured points
     ax = axs[0]
     z = np.array(snvr["zeta_deg"]); c = np.array(snvr["cyc_vs_zeta"])
-    ax.semilogy(z, c, color=OI["blue"], label="model")
+    ax.semilogy(z, c, color=OI["blue"])
     ax.errorbar([147], [2244], yerr=[108], fmt="o", color=OI["vermilion"],
-                ms=4, capsize=2, label="measured")
+                ms=4, capsize=2)
     ax.errorbar([53], [8.6], yerr=[0.4], fmt="o", color=OI["vermilion"], ms=4,
                 capsize=2)
+    ax.text(30, 700, "model", color=OI["blue"], fontsize=7, ha="left")
+    ax.text(66, 3.75, "measured", color=OI["vermilion"], fontsize=6.5,
+            ha="left", va="bottom")
     ax.annotate("out-of-plane\nalignment, see (b)", xy=(147, 2244),
-                xytext=(178, 250), fontsize=5.8,
+                xytext=(185, 300), fontsize=6.5,
                 arrowprops=dict(arrowstyle="->", lw=0.6))
-    ax.set_ylim(3, 8e3)
+    ax.set_ylim(3.5, 8e3)
     ax.set_xlabel("field angle $\\zeta$ (deg)")
     ax.set_ylabel("cyclicity $\\Lambda$")
     ax.set_xlim(0, 360)
-    ax.legend(loc="upper right", fontsize=6.5)
-    panel_label(ax, "(a)")
+    panel_label(ax, "(a)", dx=-0.30, dy=1.10)
 
     # (b) cyclicity vs misalignment
     ax = axs[1]
@@ -224,12 +221,14 @@ def fig4():
     ax.loglog(al, ca, color=OI["blue"])
     ax.errorbar([10], [2244], yerr=[108], fmt="o", color=OI["vermilion"],
                 ms=4, capsize=2)
-    ax.annotate("measured maximum\n(residual misalign. $\\approx 10°$)",
-                xy=(10, 2244), xytext=(0.9, 60), fontsize=6.2,
-                arrowprops=dict(arrowstyle="->", lw=0.7))
+    ax.annotate("measured max.\n($\\alpha \\approx 10°$)",
+                xy=(10, 2244), xytext=(0.03, 0.06),
+                textcoords="axes fraction", va="bottom", fontsize=6.5,
+                arrowprops=dict(arrowstyle="->", lw=0.7,
+                                relpos=(0.75, 1.0)))
     ax.set_xlabel("misalignment $\\alpha$ (deg)")
     ax.set_ylabel("cyclicity $\\Lambda$")
-    panel_label(ax, "(b)", dx=-0.30)
+    panel_label(ax, "(b)", dx=-0.56, dy=1.08)
 
     # (c) strain trade-off
     ax = axs[2]
@@ -240,9 +239,11 @@ def fig4():
     ax.set_xlabel("strain $2\\Upsilon_g/\\lambda_g$")
     ax.set_ylabel("cyclicity $\\Lambda$", color=OI["blue"])
     ax.axvline(snvr["device_strain_ratio"], color=OI["grey"], lw=0.8, ls="--")
-    ax.text(snvr["device_strain_ratio"] * 0.85, 2.8e5, "measured\ndevice",
-            ha="right", va="top",
-            fontsize=6.2, color=OI["grey"])
+    import matplotlib.transforms as mtr
+    trans = mtr.blended_transform_factory(ax.transData, ax.transAxes)
+    ax.text(snvr["device_strain_ratio"], 1.03, "measured device",
+            transform=trans, fontsize=6.5, ha="center", va="bottom",
+            color=OI["grey"])
     ax2 = ax.twinx()
     ax2.loglog(r, rab, color=OI["vermilion"])
     ax2.set_ylabel("Rabi rate (MHz)", color=OI["vermilion"])
@@ -256,7 +257,7 @@ def fig4():
 
 # ================================================================ Fig 5
 def fig5():
-    fig, axs = plt.subplots(1, 3, figsize=(DOUBLE, 2.60))
+    fig, axs = plt.subplots(1, 3, figsize=(DOUBLE, 2.78))
 
     # (a) efficiency budget: confocal vs integrated
     ax = axs[0]
@@ -271,7 +272,7 @@ def fig5():
             color=OI["green"], label="this design")
     ax.set_yticks(y)
     ax.set_yticklabels([f"{c[0]} | {v[0]}" for c, v in zip(conf, cavb)],
-                       fontsize=5.8)
+                       fontsize=7)
     ax.invert_yaxis()
     tot_c = np.prod([c[1] for c in conf])
     tot_v = np.prod([c[1] for c in cavb])
@@ -281,7 +282,7 @@ def fig5():
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.52),
               fontsize=6, ncol=2)
     ax.set_xlim(0, 1.05)
-    panel_label(ax, "(a)", dx=-0.60, dy=1.12)
+    panel_label(ax, "(a)", dx=-0.72, dy=1.16)
 
     # (b) Fr vs Lambda0
     ax = axs[1]
@@ -297,15 +298,14 @@ def fig5():
     for lx, txt in ((8.6, "worst\nangle"), (100, "high\nstrain"),
                     (2244, "max $\\Lambda$")):
         ax.axvline(lx, color=OI["skyblue"], lw=0.6, ls="--", alpha=0.7)
-        ax.text(lx * 1.12, 103, txt, fontsize=5.6, color=OI["blue"],
-                va="bottom")
+        ax.text(lx, 104, txt, fontsize=6.5, color=OI["blue"],
+                va="bottom", ha="center")
     ax.set_xlabel("bare cyclicity $\\Lambda_0$")
     ax.set_ylabel("single-shot fidelity $F_r$ (%)")
     ax.set_ylim(48, 102)
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.50),
-              fontsize=5.8, ncol=1, frameon=False)
-    ax.text(0.035, 0.965, "(b)", transform=ax.transAxes, fontweight="bold",
-            fontsize=9, va="top")
+              fontsize=7, ncol=1, frameon=False)
+    pass  # (b) label added after tight_layout
 
     # (c) design map
     ax = axs[2]
@@ -322,10 +322,13 @@ def fig5():
     ax.set_xscale("log")
     ax.set_xlabel("loaded quality factor $Q_L$")
     ax.set_ylabel("placement overlap $\\xi_{pos}$")
-    ax.text(0.035, 0.965, "(c)", transform=ax.transAxes, fontweight="bold",
-            fontsize=9, va="top")
+    pass  # (c) label added after tight_layout
 
     fig.tight_layout(w_pad=1.6)
+    for axx, lab in ((axs[1], "(b)"), (axs[2], "(c)")):
+        p = axx.get_position()
+        fig.text(p.x0 - 0.012, p.y1 + 0.02, lab, fontweight="bold",
+                 fontsize=9, ha="right", va="bottom")
     save(fig, "fig5_readout")
 
 
