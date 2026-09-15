@@ -84,10 +84,10 @@ def panel_top(ax):
     # labels
     _lead(ax, (1.9, 2.55), (1.9, yc+0.14), "diamond nanobeam")
     _lead(ax, (7.1, 2.55), (6.9, yc+0.07), "adiabatic taper")
-    _lead(ax, (8.6, 0.52), (8.6, yc-0.24), "TFLN bus, 600 nm")
+    _lead(ax, (8.6, 0.68), (8.6, yc-0.24), "TFLN bus, 600 nm")
     _lead(ax, (10.35, 2.55), (10.55, yc+0.38), "detector")
     ax.text(0.22, 0.30, "SiO$_2$", fontsize=7.5, color="#666666")
-    ax.text(10.85, 0.22, "top view, not to scale", fontsize=6,
+    ax.text(10.85, 0.10, "top view, not to scale", fontsize=6,
             color="#999999", ha="right")
 
 
@@ -115,11 +115,16 @@ def panel_side(ax):
     ax.add_patch(Rectangle((10.3, 0.54), 0.55, 0.42, fc=DET, ec="k",
                            lw=0.5))
     # labels
-    _lead(ax, (1.7, 1.05), (1.7, 0.57), "diamond, 200 nm")
-    _lead(ax, (8.7, 1.05), (8.9, 0.56), "TFLN film, 190 nm")
-    ax.text(0.22, 0.10, "SiO$_2$", fontsize=7.5, color="#666666")
-    ax.text(10.15, 0.10, "side view, not to scale", fontsize=6,
-            color="#999999", ha="right")
+    ax.text(1.7, 1.05, "diamond, 200 nm", fontsize=7, ha="center",
+            va="center")
+    ax.plot([1.7, 1.7], [0.87, 0.555], color="#999999", lw=0.7)
+    ax.text(8.7, 1.05, "TFLN film, 190 nm", fontsize=7, ha="center",
+            va="center")
+    ax.plot([8.8, 8.9], [0.87, 0.545], color="#999999", lw=0.7)
+    ax.text(0.22, 0.175, "SiO$_2$", fontsize=7, color="#666666",
+            va="center")
+    ax.text(10.15, 0.175, "side view, not to scale", fontsize=6,
+            color="#999999", ha="right", va="center")
 
 
 def panel_zoom(ax):
@@ -196,9 +201,10 @@ def panel_b(ax):
                    (y2, "$|\\!\\uparrow\\rangle$")):
         ax.text(x1 + 0.02, y, lab, fontsize=8, va="center")
     # qubit splitting bracket next to the |up> line start
-    ax.annotate("", xy=(0.315, y2), xytext=(0.315, y1),
-                arrowprops=dict(arrowstyle="<->", lw=0.7))
-    ax.text(0.275, (y1+y2)/2, "$\\omega_q$", fontsize=7, ha="right",
+    ax.annotate("", xy=(0.44, y2), xytext=(0.44, y1),
+                arrowprops=dict(arrowstyle="<->", lw=0.7,
+                                mutation_scale=6))
+    ax.text(0.46, (y1+y2)/2, "$\\omega_q$", fontsize=7, ha="left",
             va="center")
     # spin-conserving C1 (cavity-enhanced), clear of the |up> line
     ax.add_patch(FancyArrowPatch((0.195, y1), (0.195, yC),
@@ -207,12 +213,12 @@ def panel_b(ax):
     ax.text(0.175, 0.56, "C$_1$", fontsize=7.5, color=OI["vermilion"],
             ha="right")
     # cavity line profile beside C1
-    yy = np.linspace(0.50, 0.84, 120)
+    yy = np.linspace(0.53, 0.84, 120)
     lor = 0.075 / (1 + ((yy - 0.67) / 0.085) ** 2)
     ax.plot(0.395 + lor, yy, color=OI["green"], lw=1.2)
-    ax.text(0.36, 0.43, "cavity", fontsize=6.5, ha="center",
+    ax.text(0.36, 0.41, "cavity", fontsize=6.5, ha="center",
             color=OI["green"])
-    ax.text(0.36, 0.34, "$F_C = 19$", fontsize=6.5, ha="center",
+    ax.text(0.36, 0.32, "$F_C = 19$", fontsize=6.5, ha="center",
             color=OI["green"])
     # weak spin-flipping C2
     ax.add_patch(FancyArrowPatch((0.54, y2), (0.54, yC), arrowstyle="-|>",
@@ -234,7 +240,7 @@ def panel_c(ax):
                     100*np.array(frl["confocal_004"]), color=OI["grey"],
                     alpha=0.45, lw=0)
     ax.plot([2244], [87.4], "o", ms=4, color=OI["vermilion"])
-    ax.text(140, 91.5, "this design", color=OI["green"], fontsize=6.5)
+    ax.text(60, 90.0, "this design", color=OI["green"], fontsize=6.5)
     ax.text(700, 63.5, "confocal", color="#777777", fontsize=6.5,
             ha="center")
     ax.text(2244, 80.5, "measured", color=OI["vermilion"], fontsize=6.5,

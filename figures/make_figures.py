@@ -73,7 +73,8 @@ def fig2():
     ax.plot(wl, te0l, color=OI["vermilion"], label="TFLN ridge TE$_0$")
     ax.axhline(1.4574, color=OI["grey"], lw=0.7, ls=":")
     ax.text(640, 1.468, "SiO$_2$ light line", color=OI["grey"], fontsize=7,
-            ha="right")
+            ha="right",
+            bbox=dict(boxstyle="square,pad=0.10", fc="white", ec="none"))
     ax.axvline(280, color=OI["blue"], lw=0.7, ls="--", alpha=0.5)
     ax.axvline(600 * 0.66, color="none")
     ax.set_xlabel("width (nm)")
@@ -90,14 +91,15 @@ def fig2():
     for i in range(bn.shape[1]):
         ax.plot(bw, bn[:, i], color=cols[i], lw=1.1)
     ends = bn[0]
+    starts = bn[-1]
     ax.text(58, ends[0] - 0.010, "TE branch", color=cols[0],
             fontsize=7, ha="right", va="top")
     ax.text(58, ends[1] - 0.012, "TM branch", color=cols[1],
             fontsize=7, ha="right", va="top")
-    ax.text(58, ends[2] - 0.012, "LN TE$_1$ (sym.-forb.)",
-            color=cols[2], fontsize=7, ha="right", va="top")
-    ax.text(58, ends[3] + 0.012, "LN TM$_0$", color=cols[3],
-            fontsize=7, ha="right", va="bottom")
+    ax.text(58, ends[2] - 0.012, "LN TE$_1$", color=cols[2],
+            fontsize=7, ha="right", va="top")
+    ax.text(bw[-1], 1.790, "LN TM$_0$", color=cols[3],
+            fontsize=7, ha="left", va="top")
     ax.set_xlabel("diamond taper width (nm)")
     ax.set_ylabel("supermode $n_\\mathrm{eff}$")
     ax.invert_xaxis()
@@ -147,11 +149,15 @@ def fig3():
     f_diel, f_air = edges["f_diel_ca"], edges["f_air_ca"]
     ax.fill_between([0, 1], f_diel, f_air, color=OI["yellow"], alpha=0.30,
                     lw=0)
-    ax.text(0.62, 0.345, "TE gap", fontsize=7, color=OI["black"])
+    ax.text(0.62, 0.345, "TE gap", fontsize=7, color=OI["black"],
+            bbox=dict(boxstyle="square,pad=0.15", fc="white", ec="none",
+                      alpha=0.85))
     f_c = a / prod["lam_nm"]
     ax.axhline(f_c, color=OI["vermilion"], lw=1.0)
     ax.text(0.05, f_c + 0.007, "cavity mode (618.7 nm)",
-            color=OI["vermilion"], fontsize=7, va="bottom")
+            color=OI["vermilion"], fontsize=7, va="bottom",
+            bbox=dict(boxstyle="square,pad=0.15", fc="white", ec="none",
+                      alpha=0.85))
     ax.set_xlabel("$k_x a/\\pi$")
     ax.set_ylabel("frequency $a/\\lambda$")
     ax.set_xlim(0, 1); ax.set_ylim(0.15, 0.42)
@@ -204,11 +210,9 @@ def fig4():
     ax.errorbar([53], [8.6], yerr=[0.4], fmt="o", color=OI["vermilion"], ms=4,
                 capsize=2)
     ax.text(30, 700, "model", color=OI["blue"], fontsize=7, ha="left")
-    ax.text(66, 3.75, "measured", color=OI["vermilion"], fontsize=6.5,
-            ha="left", va="bottom")
     ax.annotate("out-of-plane\nalignment, see (b)", xy=(147, 2244),
                 xytext=(185, 300), fontsize=6.5,
-                arrowprops=dict(arrowstyle="->", lw=0.6))
+                arrowprops=dict(arrowstyle="->", lw=0.6, shrinkB=4))
     ax.set_ylim(3.5, 8e3)
     ax.set_xlabel("field angle $\\zeta$ (deg)")
     ax.set_ylabel("cyclicity $\\Lambda$")
@@ -295,13 +299,14 @@ def fig5():
     ax.plot([2244], [87.4], "o", ms=4, color=OI["vermilion"],
             label="measured 87.4%")
     ax.axhline(50, color=OI["grey"], lw=0.5, ls=":")
-    for lx, txt in ((8.6, "worst\nangle"), (100, "high\nstrain"),
-                    (2244, "max $\\Lambda$")):
+    for lx, tx, txt in ((8.6, 7.2, "worst\nangle"),
+                        (100, 124, "high\nstrain"),
+                        (2244, 2244, "max $\\Lambda$")):
         ax.axvline(lx, color=OI["skyblue"], lw=0.6, ls="--", alpha=0.7)
-        ax.text(lx, 104, txt, fontsize=6.5, color=OI["blue"],
+        ax.text(tx, 104, txt, fontsize=6.5, color=OI["blue"],
                 va="bottom", ha="center")
     ax.set_xlabel("bare cyclicity $\\Lambda_0$")
-    ax.set_ylabel("single-shot fidelity $F_r$ (%)")
+    ax.set_ylabel("single-shot $F_r$ (%)")
     ax.set_ylim(48, 102)
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.50),
               fontsize=7, ncol=1, frameon=False)
