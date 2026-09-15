@@ -75,11 +75,12 @@ def fig2():
     ax.text(640, 1.4574, "SiO$_2$ light line", color=OI["grey"], fontsize=7,
             ha="right", va="center",
             bbox=dict(boxstyle="square,pad=0.10", fc="white", ec="none"))
+    ax.set_ylim(bottom=1.395)
     ax.axvline(280, color=OI["blue"], lw=0.7, ls="--", alpha=0.5)
     ax.axvline(600 * 0.66, color="none")
     ax.set_xlabel("width (nm)")
     ax.set_ylabel("$n_\\mathrm{eff}$ at 619 nm")
-    ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.10),
+    ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.17),
               fontsize=6.5, handlelength=1.1, handletextpad=0.4,
               borderaxespad=0.2, labelspacing=0.3)
     panel_label(ax, "(a)", dx=-0.30, dy=1.10)
@@ -210,9 +211,7 @@ def fig4():
     ax.errorbar([53], [8.6], yerr=[0.4], fmt="o", color=OI["vermilion"], ms=4,
                 capsize=2)
     ax.text(30, 700, "model", color=OI["blue"], fontsize=7, ha="left")
-    ax.text(185, 300, "out-of-plane\nalignment, see (b)", fontsize=6.5)
-    ax.annotate("", xy=(152, 1700), xytext=(179, 800),
-                arrowprops=dict(arrowstyle="->", lw=0.6))
+    ax.text(172, 2244, "see (b)", fontsize=6.5, va="center")
     ax.set_ylim(3.5, 8e3)
     ax.set_xlabel("field angle $\\zeta$ (deg)")
     ax.set_ylabel("cyclicity $\\Lambda$")
