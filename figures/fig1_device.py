@@ -161,7 +161,7 @@ def panel_zoom(ax):
                 arrowprops=dict(arrowstyle="-|>", lw=1.2,
                                 color=OI["green"]), zorder=7,
                 annotation_clip=False)
-    ax.text(13.35, yc + 0.45, "to bus", fontsize=6.8, color=OI["green"],
+    ax.text(13.0, yc + 0.45, "to bus", fontsize=6.8, color=OI["green"],
             ha="right")
     # region brackets above the beam
     def bracket(x0, x1, label, ty=2.30):
