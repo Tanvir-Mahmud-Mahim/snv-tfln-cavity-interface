@@ -14,15 +14,25 @@ authors:
     affiliation: BRAC University
 license: Apache-2.0
 repository-code: "https://github.com/Tanvir-Mahmud-Mahim/snv-tfln-cavity-interface"
+version: "1.1.1"
+date-released: "2026-09-15"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22758086
+    description: "Zenodo archive: raw simulation outputs, validation testbench with reference logs, and a frozen copy of the code"
 preferred-citation:
   type: article
   title: "Fast single-shot readout of tin-vacancy spins with an overcoupled diamond nanocavity on thin-film lithium niobate"
   authors:
     - family-names: Mahim
       given-names: Tanvir M.
+      affiliation: BRAC University
     - family-names: Rahman
       given-names: M. Mosaddequr
+      affiliation: BRAC University
     - family-names: Mohsin
       given-names: Abu S. M.
-  journal: "Optics Express (submitted)"
+      affiliation: BRAC University
+  journal: "Optics Express"
+  status: submitted
   year: 2026
