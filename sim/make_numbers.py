@@ -1,16 +1,13 @@
 """Collect every number quoted in the manuscript from the results files
-and write LaTeX macros.  The macro block is written to paper/macros.tex
-and also spliced into paper/manuscript.tex and supplement/supplement.tex
-between the AUTO-NUMBERS markers if those files exist."""
+and write LaTeX macros.  The macro block is written to results/macros.tex
+(sim/results/, next to the results it is made from)."""
 
 import json
 import pathlib
-import re
 
 import numpy as np
 
 SIM = pathlib.Path(__file__).resolve().parent
-ROOT = SIM.parent
 RES = SIM / "results"
 
 import sys
@@ -110,15 +107,6 @@ for k, v in r.items():
 lines.append("% ---- end of result macros ----")
 block = "\n".join(lines)
 
-(ROOT / "paper").mkdir(exist_ok=True)
-(ROOT / "paper" / "macros.tex").write_text(block + "\n")
+RES.mkdir(exist_ok=True)
+(RES / "macros.tex").write_text(block + "\n")
 print(block)
-
-for tex in (ROOT / "paper" / "manuscript.tex",
-            ROOT / "supplement" / "supplement.tex"):
-    if tex.exists():
-        s = tex.read_text()
-        s2 = re.sub(r"% ---- auto-generated result macros.*?% ---- end of result macros ----",
-                    lambda m: block, s, flags=re.S)
-        tex.write_text(s2)
-        print("spliced into", tex)
