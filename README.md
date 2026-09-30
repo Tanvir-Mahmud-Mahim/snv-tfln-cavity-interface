@@ -98,12 +98,14 @@ snv-tfln-cavity-interface/
 |   |-- run_sweeps.py       runs run_cavity.py for the mirror-number and convergence sweeps
 |   |-- run_cavity_fields.py  final ("production") cavity solve: field maps and mirror decay
 |   |-- run_tolerance.py    fabrication-tolerance and suspended-beam cavity solves
+|   |-- run_taper_eme.py    taper transfer (EME) with the settings of the archived run
 |   |-- snv.py              SnV- spin model (levels, qubit frequency, cyclicity, Rabi rate)
 |   |-- snv_results.py      spin-model results for the article (validation and scans)
 |   |-- readout.py          photon budget and single-shot readout statistics
 |   |-- interface.py        design point, readout predictions and the design-space map
+|   |-- run_fr_vs_lambda.py readout fidelity versus bare cyclicity (cavity and confocal)
 |   |-- checks.py           the verification testbench (writes verification.json)
-|   |-- make_numbers.py     collects every quoted number into LaTeX macros
+|   |-- make_numbers.py     collects every quoted number into LaTeX macros (sim/results/macros.tex)
 |   `-- data/               four refractiveindex.info files (CC0): Peter.yml (diamond),
 |                           Zelmon-o.yml, Zelmon-e.yml (LiNbO3), Malitson.yml (SiO2)
 `-- figures/
@@ -117,10 +119,9 @@ The simulation scripts write their results to `sim/results/`
 (`snv_results.py` writes to `results/` in the folder it is started from).
 The folder is created automatically and is not stored on GitHub (it is
 listed in `.gitignore`); the archived results are in the Zenodo record. The figure scripts write PDF and
-PNG files into `figures/`. `sim/make_numbers.py` writes `paper/macros.tex`
-and, if the files `paper/manuscript.tex` and `supplement/supplement.tex`
-exist (they are not in this repository), also replaces the block between
-their "auto-generated result macros" markers with the new macros.
+PNG files into `figures/`. `sim/make_numbers.py` writes its LaTeX macros to
+`sim/results/macros.tex`. No script writes to a `paper/`, `latex/` or
+`supplement/` folder, and no script edits manuscript files.
 
 ---
 
@@ -142,7 +143,8 @@ also installs what these need, for example `meshwell` and `pygmsh` for
 
 **System library.** `gmsh` needs the OpenGL library `libGLU.so.1` (package
 `libglu1-mesa` on Debian and Ubuntu). Without it, `import gmsh` fails and
-`sim/waveguide.py` cannot run. All other scripts work without it.
+`sim/waveguide.py` and `sim/run_taper_eme.py` cannot run. All other scripts
+work without it.
 
 **Fonts (optional).** Figure text uses Times New Roman when its font files
 (`times.ttf`, `timesbd.ttf`, `timesi.ttf`, `timesbi.ttf`) are placed in
@@ -186,7 +188,7 @@ read the saved cavity, taper and tolerance results (Way B).
 python sim/checks.py             # full testbench -> sim/results/verification.json
 python figures/fig1_device.py    # Fig. 1
 python figures/make_figures.py   # Figs. 2 to 5
-python sim/make_numbers.py       # LaTeX macros -> paper/macros.tex
+python sim/make_numbers.py       # LaTeX macros -> sim/results/macros.tex
 ```
 
 The scripts expect these files in `sim/results/`: `wg_diamond.json`,
@@ -201,23 +203,54 @@ The scripts expect these files in `sim/results/`: `wg_diamond.json`,
 
 Run the steps in [Section 5](#5-the-scripts-step-by-step) in order. The
 cavity and waveguide solves are the slow part; the earlier README gives
-"minutes to tens of minutes" for each heavy solve. Three result files are
-**not** produced by any command in this repository:
+"minutes to tens of minutes" for each heavy solve.
 
-- `taper_eme.json` and `eme_log2.txt` come from the function
-  `eme_taper()` in `sim/waveguide.py`, which no script calls. The arguments
-  used for the archived run (bus width, taper lengths) are not recorded.
-  The default length list is 2, 4, 6, 8, 10, 14 and 18 &micro;m, but
-  `make_numbers.py` needs an entry at 3 &micro;m, and `make_figures.py`
-  labels the fifth entry as the 6 &micro;m value, so the archived run used a
-  different list. `make_figures.py` reads `eme_log2.txt` as the printed log
-  of such a run (lines of the form `[i/30] w=... n_eff=[...]`).
-- `fr_vs_lambda.json` (readout fidelity versus bare cyclicity, for the cavity
-  design and for a confocal set-up with detection efficiency 0.2% and 0.4%)
-  is read by `fig1_device.py`, `make_figures.py` and `make_numbers.py`, but
-  no script here writes it.
+Two small scripts make the three result files that earlier had no script
+(`taper_eme.json`, `eme_log2.txt` and `fr_vs_lambda.json`):
 
-For these files, use the archived copies (Way B).
+```
+python sim/run_taper_eme.py      # taper_eme.json and eme_log2.txt (needs gmsh)
+python sim/run_fr_vs_lambda.py   # fr_vs_lambda.json
+```
+
+Their settings are not written in the archived files; they were recovered
+from the archived files and checked against them:
+
+- `run_taper_eme.py` calls `eme_taper()` in `sim/waveguide.py` with a TFLN
+  bus width of 0.6 &micro;m, a diamond taper from 350 nm to 50 nm in 30
+  slices (all four values are stored in the archived `taper_eme.json`),
+  taper lengths 1, 2, 3, 4, 6, 8, 10, 12, 16 and 20 &micro;m (also stored
+  there), and 4 modes per slice (the archived log prints four effective
+  indices per slice; the function default is 3). It saves the printed log
+  as `eme_log2.txt` and ends it with the line `EME DONE`, as in the
+  archived log.
+  Check (Python 3.11.15, the pinned packages, and the unpinned `meshwell`
+  2.3.6 and `pygmsh` 7.1.17): the mesh has 8399 vertices as in the archived
+  log, the new `eme_log2.txt` is byte-for-byte identical to the archived
+  one, and the ten transfer values in `taper_eme.json` differ from the
+  archived ones by at most 3.6e-14 (rounding level); all other entries are
+  equal. The run took about 65 minutes on the shared two-core computer
+  (load average 3 to 17 during the run).
+- `run_fr_vs_lambda.py` computes the "cavity" curve with
+  `interface.readout_point()` at the design point (Q<sub>L</sub> = 500),
+  the same optimisation as `interface.py`. The confocal curves use
+  `readout.fidelity_exact()` with the settings of check V10 (bulk decay
+  rate, saturation parameter 2, 35.4 MHz linewidth in the dark-state leak,
+  0.15 background counts per 50 &micro;s) but a state-preparation fidelity
+  of 0.99 (V10 uses 0.96),
+  and take the better of a 10 &micro;s and a 30 &micro;s readout window.
+  These confocal settings were found by comparison with the archived file,
+  which does not record them. With them the new file is byte-for-byte
+  identical to the archived `fr_vs_lambda.json` (all 80 numbers equal).
+  The archived values do not show whether longer windows were also tried:
+  adding any of the tested windows from 40 to 1000 &micro;s (including the
+  50 &micro;s of V10) changes no value, while adding any tested window from
+  0.1 to 25 &micro;s does. Run time: 5 to 19 s.
+
+With either set of files, `checks.py` passes 15 of 15 checks,
+`make_numbers.py` writes the same `macros.tex`, and the five figures are
+pixel-for-pixel the same. `verification.json` differs from the archived one
+only in the V9 transfer values (by at most 3.6e-14).
 
 ---
 
@@ -226,17 +259,18 @@ For these files, use the archived copies (Way B).
 | Step | Command | What it does | Time* | Results (in `sim/results/`) |
 |---|---|---|---|---|
 | 1 | `python sim/materials.py` | Prints the refractive indices of diamond, LiNbO<sub>3</sub> (ordinary and extraordinary) and SiO<sub>2</sub> at 619 nm, and the diamond group index | 0.4 s | printed only |
-| 2 | `python sim/waveguide.py` | Light modes (effective index versus width) of a 200 nm thick diamond bar on SiO<sub>2</sub> (widths 160 to 400 nm) and of a 190 nm thick TFLN ridge (widths 250 to 700 nm) | not run here (needs `libGLU`) | `wg_diamond.json`, `wg_ln.json` |
-| 2b | *(no script)* `eme_taper()` in `sim/waveguide.py` | Light transfer through the diamond taper (350 nm down to 50 nm, 30 slices) onto the TFLN bus, versus taper length | not run here | `taper_eme.json`; the printed log is `eme_log2.txt` |
+| 2 | `python sim/waveguide.py` | Light modes (effective index versus width) of a 200 nm thick diamond bar on SiO<sub>2</sub> (widths 160 to 400 nm) and of a 190 nm thick TFLN ridge (widths 250 to 700 nm) | not timed | `wg_diamond.json`, `wg_ln.json` |
+| 2b | `python sim/run_taper_eme.py` | Calls `eme_taper()` in `sim/waveguide.py`: light transfer through the diamond taper (350 nm down to 50 nm, 30 slices, 4 modes per slice) onto the 600 nm TFLN bus, for taper lengths 1 to 20 &micro;m. Needs `gmsh` | about 65 min | `taper_eme.json`, `eme_log2.txt` (the printed log) |
 | 3 | `python sim/run_cavity.py [a gmax numeig depth N_mirror W_y]` | One cavity solve: finds the mode trapped at the centre, then its Q, mode volume and Purcell factor. Defaults: a = 180 nm, gmax 2.0, 130 modes, taper depth 0.14, 10 mirror holes, W_y = 4 | 3.7 min (223 s) with the defaults | `cavity_mode_a<a>_g<gmax>_d<depth>_N<N>_W<W_y>.json` |
 | 4 | `cd sim` then `python run_sweeps.py` | Runs `run_cavity.py` at a = 193.4 nm for 4, 6, 8 and 12 mirror holes, for gmax 1.5, 2.5 and 3.0, and for W_y = 5 (8 solves). Must be started inside `sim/`, because it calls `run_cavity.py` by its bare file name | long (not re-timed) | `cavity_mode_a193_*.json` |
 | 5 | `python sim/run_cavity_fields.py` | Final cavity solve (a = 194.35 nm, gmax 2.5): wavelength, Q, field maps, and the light decay per mirror period | long (not re-timed) | `cavity_production.json`, `cavity_field.npz` |
 | 6 | `python sim/run_tolerance.py` | Seven cavity solves at a = 194.35 nm: nominal, hole radius 0.29a and 0.31a, width 270 and 290 nm, thickness 190 nm, and a free-standing (suspended) beam | long (not re-timed) | `tolerance.json` |
 | 7 | `cd sim` then `python snv_results.py` | Spin-model numbers: checks against measurements, cyclicity versus magnet angle and misalignment, and cyclicity and Rabi rate versus strain. Must be started inside `sim/`: it writes to `results/` relative to the current folder | 6 s | `snv_results.json` |
 | 8 | `python sim/interface.py --map` | Design point (Q<sub>L</sub> = 500), readout for three bare cyclicities, best Q<sub>L</sub> scans, and the fidelity map over Q<sub>L</sub> and emitter placement. Without `--map` the map is skipped (33 s) | 106 s | `interface.json`, `design_map.npz` |
+| 8b | `python sim/run_fr_vs_lambda.py` | Readout fidelity versus bare cyclicity (3 to 5000): the cavity design at Q<sub>L</sub> = 500, and a confocal set-up with detection efficiency 0.2% and 0.4% (see Way C for the settings) | 5 to 19 s | `fr_vs_lambda.json` |
 | 9 | `python sim/checks.py` | The verification testbench ([Section 9](#9-built-in-checks)) | 3 s for V1 to V7 | `verification.json` |
-| 10 | `python figures/fig1_device.py` and `python figures/make_figures.py` | Draw Fig. 1 and Figs. 2 to 5 | not timed (needs archived data) | `figures/*.pdf`, `figures/*.png` |
-| 11 | `python sim/make_numbers.py` | Writes every number quoted in the article as a LaTeX macro; also splices them into `paper/manuscript.tex` and `supplement/supplement.tex` if those files exist | not timed (needs archived data) | `paper/macros.tex` |
+| 10 | `python figures/fig1_device.py` and `python figures/make_figures.py` | Draw Fig. 1 and Figs. 2 to 5 | 3 to 17 s and 1 to 3 min | `figures/*.pdf`, `figures/*.png` |
+| 11 | `python sim/make_numbers.py` | Writes every number quoted in the article as a LaTeX macro | 1 s | `macros.tex` |
 
 \*Times measured on a shared two-core computer that was busy with other work
 (load average about 6).
@@ -261,11 +295,11 @@ Figs. 2 to 5 in one run.
 
 | Figure in the article | Content | Data from | Drawn by |
 |---|---|---|---|
-| Fig. 1 | (a) Top view, side view and magnified cavity region of the device (schematic); (b) level scheme with the cavity-enhanced transition; (c) readout fidelity versus bare cyclicity | `fr_vs_lambda.json` | `fig1_device.py` |
+| Fig. 1 | (a) Top view, side view and magnified cavity region of the device (schematic); (b) level scheme with the cavity-enhanced transition; (c) readout fidelity versus bare cyclicity | step 8b (`fr_vs_lambda.json`) | `fig1_device.py` |
 | Fig. 2 | (a) Effective index versus width, diamond bar and TFLN ridge; (b) coupled-mode effective indices along the taper; (c) taper transfer versus taper length | steps 2, 2b | `make_figures.py` (`fig2`) |
 | Fig. 3 | (a) Band diagram of one mirror cell with the TE band gap and the cavity line (computed while drawing); (b) field maps of the cavity mode, top and side; (c) field along the beam on a log scale | step 5 (and `band_edges.json`) | `make_figures.py` (`fig3`) |
 | Fig. 4 | (a) Cyclicity versus magnet angle, with the two measured points; (b) cyclicity versus misalignment; (c) cyclicity and Rabi rate versus strain | step 7 | `make_figures.py` (`fig4`) |
-| Fig. 5 | (a) Efficiency of each stage, confocal set-up versus this design; (b) readout fidelity versus bare cyclicity; (c) fidelity map over Q<sub>L</sub> and emitter placement, with the validity boundary | step 8 and `fr_vs_lambda.json` | `make_figures.py` (`fig5`) |
+| Fig. 5 | (a) Efficiency of each stage, confocal set-up versus this design; (b) readout fidelity versus bare cyclicity; (c) fidelity map over Q<sub>L</sub> and emitter placement, with the validity boundary | steps 8 and 8b | `make_figures.py` (`fig5`) |
 
 ---
 
@@ -455,9 +489,10 @@ Dates are commit dates of the tagged versions.
 | v1.0.0 | 15 Sep 2026 | First version: simulation code, material data, figure scripts | https://doi.org/10.5281/zenodo.22756033 |
 
 The `main` branch has four more commits after v1.1.1 (figure label fixes,
-15 to 16 Sep 2026), and this documentation follows them; neither is tagged.
+15 to 16 Sep 2026), and this documentation and the fixes of 30 Sep 2026
+follow them; none of these is tagged.
 `CITATION.cff` therefore still gives version 1.1.1 dated 2026-09-15, the
-last tag. Both are listed under "Unreleased" in [CHANGELOG.md](CHANGELOG.md).
+last tag. All are listed under "Unreleased" in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 

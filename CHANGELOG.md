@@ -5,6 +5,40 @@ before "Unreleased" are taken from the git history and tags.
 
 ## Unreleased
 
+### Fixes (30 September 2026)
+
+No scientific result changed. The regenerated files were compared with the
+archived ones in the Zenodo record (10.5281/zenodo.22758086).
+
+- New script `sim/run_taper_eme.py`. Before: `taper_eme.json` and
+  `eme_log2.txt` came from `eme_taper()` in `sim/waveguide.py`, which no
+  script called, and the settings of the archived run were not recorded.
+  After: the script calls `eme_taper()` with the settings recovered from
+  the archived files (bus width 0.6 um, taper 350 nm to 50 nm in 30 slices,
+  4 modes per slice, lengths 1, 2, 3, 4, 6, 8, 10, 12, 16 and 20 um) and
+  saves the printed log as `eme_log2.txt`. Result: the log is byte-for-byte
+  identical to the archived `eme_log2.txt`; the transfer values in
+  `taper_eme.json` differ from the archived ones by at most 3.6e-14.
+- New script `sim/run_fr_vs_lambda.py`. Before: `fr_vs_lambda.json` (read by
+  `fig1_device.py`, `make_figures.py` and `make_numbers.py`) was written by
+  no script. After: the script writes it; the cavity curve uses
+  `interface.readout_point()` at Q_L = 500, and the confocal curves use
+  `readout.fidelity_exact()` with the check-V10 settings, state-preparation
+  fidelity 0.99 and the better of a 10 us and a 30 us window. These
+  confocal settings were recovered by comparison with the archived file.
+  Result: byte-for-byte identical to the archived `fr_vs_lambda.json`.
+- `sim/make_numbers.py`. Before: it created `paper/` in the repository
+  folder, wrote `paper/macros.tex`, and replaced the macro block inside
+  `paper/manuscript.tex` and `supplement/supplement.tex` when those files
+  existed. After: it writes the same macros to `sim/results/macros.tex`
+  (the folder is created if needed and is already in `.gitignore`) and no
+  longer creates folders or edits any manuscript file. The macro text is
+  unchanged (checked byte for byte against the old script).
+- README: the two new scripts in the file tree, in Way C and in the script
+  table (steps 2b and 8b), how they were checked, the new place of
+  `macros.tex`, and the measured run times of `make_numbers.py` and the
+  figure scripts. The "no script writes these files" gap is removed.
+
 ### Documentation
 
 Documentation only; no code, data or result changed.
