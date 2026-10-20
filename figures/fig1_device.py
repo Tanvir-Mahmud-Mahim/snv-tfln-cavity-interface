@@ -178,7 +178,10 @@ def panel_zoom(ax):
     x_t1 = xs[-1 - n_out] + 0.30          # end of the output-side taper
     bracket(2.42, x_t1, "quadratic taper, $a \\rightarrow 0.86a$")
     QL = json.load(open(RES / "cavity_loaded.json"))["Q_L"]
-    bracket(x_t1 + 0.12, 11.6, f"output, $Q_L \\approx {QL:.0f}$", ha="left")
+    bracket(x_t1 + 0.12, 11.6, "output")
+    # loaded Q below the output section, in the free space under the beam
+    ax.text((x_t1 + 0.12 + 11.6) / 2, 0.02, f"$Q_L \\approx {QL:.0f}$",
+            fontsize=6.8, ha="center", va="bottom")
     # lattice-constant dimension between two mirror holes
     for xe in (xs[1], xs[2]):
         ax.plot([xe, xe], [yc - 0.16, 0.38], color="#777777", lw=0.5)
@@ -271,7 +274,7 @@ def panel_c(ax):
                 color="#666666")
     ax.text(1.15, 1.2, "B2", fontsize=6.5, ha="left", va="center",
             color=OI["blue"])
-    ax.text(-0.45, 1.2, "A1", fontsize=6.5, ha="right", va="center",
+    ax.text(-0.70, 1.2, "A1", fontsize=6.5, ha="right", va="center",
             color=OI["vermilion"])
     ax.annotate("dark-state\nleak", xy=(-0.05, leak), xytext=(-3.3, 0.25),
                 fontsize=6.3, ha="center", va="center", linespacing=0.95,

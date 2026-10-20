@@ -16,7 +16,7 @@ RES = SIM / "results"
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(SIM))
 
-from figstyle import OI, SINGLE, DOUBLE, setup, panel_label
+from figstyle import OI, SINGLE, DOUBLE, setup
 
 setup()
 
@@ -44,17 +44,25 @@ fdtd = json.load(open(RES / "cavity_fdtd_summary.json"))
 cavL = json.load(open(RES / "cavity_loaded.json"))
 
 
-def letters(fig, axes_labels, dx=-0.012, dy=0.012):
+def letters(fig, axes_labels, dx=-0.012, dy=0.012, frame_top=False):
     """Panel letters placed after layout, just above the top-left corner
     of each axes' tight bounding box (never overlapping tick labels)."""
     fig.canvas.draw()
     r = fig.canvas.get_renderer()
     inv = fig.transFigure.inverted()
+    pos = []
     for ax, lab in axes_labels:
         bb = ax.get_tightbbox(r)
         x0, y1 = inv.transform((bb.x0, bb.y1))
         p = ax.get_position()
-        fig.text(x0 + dx, max(y1, p.y1) + dy, lab, fontweight="bold",
+        # frame_top: height from the axes frame only, ignoring annotations
+        # placed above the frame away from the letter
+        pos.append([x0, p.y1 + 0.03 if frame_top else max(y1, p.y1), p.y1, lab])
+    # letters of axes in the same row share the height of the highest one
+    for q in pos:
+        q[1] = max(o[1] for o in pos if abs(o[2] - q[2]) < 0.02)
+    for x0, y, _, lab in pos:
+        fig.text(x0 + dx, y + dy, lab, fontweight="bold",
                  fontsize=9, ha="left", va="bottom")
 
 
@@ -338,7 +346,6 @@ def fig4():
     ax.set_xlabel("field angle $\\zeta$ (deg)")
     ax.set_ylabel("cyclicity $\\Lambda$")
     ax.set_xlim(0, 360)
-    panel_label(ax, "(a)", dx=-0.30, dy=1.10)
 
     # (b) cyclicity vs misalignment
     ax = axs[1]
@@ -353,7 +360,6 @@ def fig4():
                                 relpos=(0.75, 1.0)))
     ax.set_xlabel("misalignment $\\alpha$ (deg)")
     ax.set_ylabel("cyclicity $\\Lambda$")
-    panel_label(ax, "(b)", dx=-0.56, dy=1.08)
 
     # (c) strain trade-off
     ax = axs[2]
@@ -374,9 +380,9 @@ def fig4():
     ax2.set_ylabel("Rabi rate (MHz)", color=OI["vermilion"])
     ax2.tick_params(axis="y", colors=OI["vermilion"])
     ax.tick_params(axis="y", colors=OI["blue"])
-    panel_label(ax, "(c)", dx=-0.30)
 
     fig.tight_layout(w_pad=2.2)
+    letters(fig, list(zip(axs, ["(a)", "(b)", "(c)"])), frame_top=True)
     save(fig, "fig4_spin")
 
 
@@ -425,9 +431,11 @@ def fig5():
     ax.set_xlim(5e-3, 100)
     ax.set_xlabel("window $\\tau$ (µs)")
     ax.set_ylabel("$F_r$ (%)")
-    ax.text(0.25, 93.5, "integrated", color=OI["green"], fontsize=6.5,
+    # labels sit in empty regions: below the integrated plateau, and to the
+    # lower right of the confocal curves
+    ax.text(0.13, 96.0, "integrated", color=OI["green"], fontsize=6.5,
             ha="left", va="top")
-    ax.text(30, 68, "confocal", color="#666666", fontsize=6.5,
+    ax.text(50, 60, "confocal", color="#666666", fontsize=6.5,
             ha="right", va="center")
 
     # (c) fidelity vs field misalignment, with cyclicity
@@ -441,8 +449,9 @@ def fig5():
     zc = np.interp(0.0, -dab[(al > 50) & (al < 75)][::1],
                    al[(al > 50) & (al < 75)])
     ax.axvline(zc, color=OI["blue"], lw=0.7, ls="--")
-    ax.text(zc - 2, 97, "$\\omega_e = \\omega_q$", color=OI["blue"],
-            fontsize=6.5, ha="right", va="top")
+    # label above the frame, centered on the dashed line (clear of the data)
+    ax.text(zc, 102.0, "$\\omega_e = \\omega_q$", color=OI["blue"],
+            fontsize=6.5, ha="center", va="bottom", clip_on=False)
     ax.set_ylim(45, 101)
     ax.set_xlim(0, 90)
     ax.set_xticks([0, 30, 60, 90])
@@ -493,11 +502,13 @@ def fig5():
             color=OI["green"], label="homogeneous")
     ax.plot([r["fwhm_GHz"] for r in rb["sd"]],
             [100 * r["F"] for r in rb["sd"]], "s-", ms=2.5,
-            color=OI["blue"], label="spectral diffusion")
+            color=OI["blue"], label="spectral\ndiffusion")
     ax.set_xlabel("extra width (GHz)")
     ax.set_ylabel("$F_r$ (%)")
+    ax.set_ylim(90, 99.8)
+    # legend in the empty lower-left corner, clear of the last data point
     ax.legend(loc="lower left", fontsize=6.5, handlelength=1.0,
-              handletextpad=0.4, borderaxespad=0.2, labelspacing=0.25)
+              handletextpad=0.4, borderaxespad=0.3, labelspacing=0.25)
 
     letters(fig, list(zip(axs, ["(a)", "(b)", "(c)", "(d)", "(e)", "(f)"])))
     save(fig, "fig5_readout")
