@@ -1,6 +1,6 @@
 # Fast Single-Shot Readout of Tin-Vacancy Spins: details
 
-This file has the full notes for version 2.0.0 (revised manuscript). For
+This file has the full notes for version 2.0.1 (revised manuscript). For
 the overview, installation and quick start, see [README.md](README.md).
 
 ## Contents
@@ -188,8 +188,10 @@ al., PRX 13, 031022 (2023), Appendix B and Table I (spin-orbit 830.15 and
 in that work), with the ab initio reduction factors of Thiering and Gali,
 PRX 8, 021063 (2018). Measured values used for validation: Rosenthal et
 al., PRX 14, 041008 (2024) (qubit frequency 3.677 GHz at 125 mT and
-&zeta; = 147&deg;; cyclicity 2244 &plusmn; 108 and 8.6 &plusmn; 0.4 at
-180 mT).
+&zeta; = 147&deg;; cyclicity 2244 &plusmn; 108 at &zeta; = 147&deg; and
+8.6 &plusmn; 0.4 at &zeta; = 53&deg;, for which the field magnitude is not
+stated; the model cyclicity is evaluated at 180 mT and changes by less than
+1% between 112 and 180 mT).
 
 **Emitter constants** (`readout_fcs.py`): lifetime 4.5 ns and quantum
 efficiency 0.80 (Rosenthal et al. 2024); Debye-Waller factor 0.57
@@ -226,8 +228,8 @@ own result, and the last line gives the number passed.
 | V1 | Diamond and SiO<sub>2</sub> index at 619 nm against 2.414 and 1.4575 | 0.5%, 0.2% |
 | V2 | Zero-field splittings (closed form and diagonalization) against 902.98 and 3000 GHz | 0.2% |
 | V3 | Qubit frequency at 125 mT, &zeta; = 147&deg;, against the measured 3.677 GHz | 2% |
-| V4 | Cyclicity at &zeta; = 53&deg;, 180 mT, against the measured 8.6 | 10% |
-| V5 | Cyclicity at 9&deg; misalignment, 180 mT, against the measured 2244 | 10% |
+| V4 | Cyclicity at &zeta; = 53&deg; (model at 180 mT) against the measured 8.6 | 10% |
+| V5 | Cyclicity at 9&deg; misalignment (model at 180 mT) against the measured 2244 | 10% |
 | V6 | Spin-flip strength for a field along the spin axis | below 1e-20 |
 | V7 | Perturbative qubit frequency (Eq. B9 of Rosenthal 2023) against diagonalization | 1e-3 |
 | V8 | Intrinsic Q of the GME convergence runs | largest/smallest < 1.15 |
@@ -287,6 +289,7 @@ own result, and the last line gives the number passed.
 
 | Version | Date | Main change | Archive DOI |
 |---|---|---|---|
+| v2.0.1 | 2026-10-20 | Figure labels moved clear of the data (Figs. 1, 4, 5) and panel letters aligned; descriptions of checks V4 and V5 state that the source gives no field magnitude for the measured cyclicities; no change in any result | https://doi.org/10.5281/zenodo.23507013 (v2.0.0 code, same results) |
 | v2.0.0 | 2026-10-20 | Revised manuscript: four-level readout model, 3D FDTD of the loaded cavity, taper tolerances, measured efficiencies, 17-check testbench; superseded two-level model removed | https://doi.org/10.5281/zenodo.23507013 |
 | v1.1.1 | 15 Sep 2026 | Figures resized to the full text width | https://doi.org/10.5281/zenodo.22758086 |
 | v1.1.0 | 15 Sep 2026 | New article title; Fig. 1 redrawn; Times New Roman figures | https://doi.org/10.5281/zenodo.22758086 |

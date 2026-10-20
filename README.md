@@ -7,7 +7,9 @@ This repository holds the code for our article **"Fast single-shot readout
 of tin-vacancy spins with an overcoupled diamond nanocavity on thin-film
 lithium niobate"**, which I wrote with M. M. Rahman and A. S. M. Mohsin
 (BRAC University). It has been submitted to Optics Express (2026); this
-version (v2.0.0) belongs to the revised manuscript (revision 1).
+version (v2.0.1) belongs to the revised manuscript (revision 1). The Zenodo
+archive holds v2.0.0, which differs only in figure label positions and
+check descriptions and gives identical results.
 
 - Repository: https://github.com/Tanvir-Mahmud-Mahim/snv-tfln-cavity-interface
 - Archive on Zenodo (raw simulation outputs, the validation testbench with

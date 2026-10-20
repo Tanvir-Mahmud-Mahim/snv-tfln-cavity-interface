@@ -3,6 +3,23 @@
 All notable changes to this code are listed here, newest first. Entries
 for v1.x are taken from the git history and tags.
 
+## v2.0.1 (2026-10-20)
+
+Presentation fixes only; every number, figure curve and check result is
+unchanged.
+
+- `figures/make_figures.py`: Fig. 5(b) labels moved clear of the curves;
+  the omega_e = omega_q label of Fig. 5(c) sits above the frame; the Fig.
+  5(f) legend no longer covers the last data point; panel letters in a row
+  share one height; Fig. 4 uses the same letter placement.
+- `figures/fig1_device.py`: the loaded-Q label of the magnified view sits
+  under the output section, inside the panel; the A1 label of panel (c)
+  is moved clear of its curve.
+- `sim/checks.py`, `sim/snv.py`: the descriptions of checks V4 and V5 no
+  longer say that the measured cyclicities were taken at 180 mT; the source
+  does not state the field magnitude, and the model value (computed at
+  180 mT) changes by less than 1% between 112 and 180 mT.
+
 ## v2.0.0 (2026-10-20)
 
 Code for the revised manuscript (revision 1, Optics Express). The
