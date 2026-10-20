@@ -1,5 +1,7 @@
 """Fig. 1: device concept (2D top + side views with a magnified cavity
-region) + level alignment + headline result."""
+region), SnV- level structure with all readout transitions, and the
+optical spectrum around the driven A1 line at the reference operating
+point (revision 1)."""
 import json, pathlib, sys
 import numpy as np
 import matplotlib
@@ -12,7 +14,6 @@ sys.path.insert(0, str(HERE))
 from figstyle import OI, DOUBLE, setup, panel_label
 setup()
 RES = HERE.parent / "sim" / "results"
-frl = json.load(open(RES / "fr_vs_lambda.json"))
 
 DIA = "#c9d4e8"      # diamond
 LN = "#9ed4f0"       # TFLN (light blue so labels stay readable)
@@ -136,9 +137,11 @@ def panel_zoom(ax):
     ax.add_patch(Rectangle((-0.4, -0.35), 13.8, 3.0, fc=SUB, ec="none"))
     ax.add_patch(Rectangle((0.1, yc-hw), 12.4, 2*hw, fc=DIA, ec="k",
                            lw=0.5, zorder=4))
-    # gaps: 3 mirror | quadratic taper down p1..p8 | up p7..p1 | 2 output
+    # gaps: 3 mirror | quadratic taper down p1..p8 | up p7..p1 | N_out
+    # output mirror periods of the design (FDTD design point)
+    n_out = json.load(open(RES / "cavity_loaded.json"))["n_out"]
     pd = [A*(1 - 0.14*(i/8.0)**2) for i in range(1, 9)]
-    gaps = [A]*3 + pd + pd[-2::-1] + [A]*2
+    gaps = [A]*3 + pd + pd[-2::-1] + [A]*n_out
     xs = [0.62]
     for g in gaps:
         xs.append(xs[-1] + g)
@@ -164,16 +167,18 @@ def panel_zoom(ax):
     ax.text(13.0, yc + 0.45, "to bus", fontsize=6.8, color=OI["green"],
             ha="right")
     # region brackets above the beam
-    def bracket(x0, x1, label, ty=2.30):
+    def bracket(x0, x1, label, ty=2.30, ha="center"):
         yb = 1.80
         ax.plot([x0, x1], [yb, yb], color="k", lw=0.7)
         ax.plot([x0, x0], [yb-0.12, yb], color="k", lw=0.7)
         ax.plot([x1, x1], [yb-0.12, yb], color="k", lw=0.7)
-        ax.text((x0+x1)/2, ty, label, fontsize=6.8, ha="center",
-                va="top")
+        ax.text((x0+x1)/2 if ha == "center" else x0, ty, label,
+                fontsize=6.8, ha=ha, va="top")
     bracket(0.1, 2.30, "mirror, $N = 10$")
-    bracket(2.42, 9.86, "quadratic taper, $a \\rightarrow 0.86a$")
-    bracket(9.98, 11.35, "output, $Q_L \\approx 500$")
+    x_t1 = xs[-1 - n_out] + 0.30          # end of the output-side taper
+    bracket(2.42, x_t1, "quadratic taper, $a \\rightarrow 0.86a$")
+    QL = json.load(open(RES / "cavity_loaded.json"))["Q_L"]
+    bracket(x_t1 + 0.12, 11.6, f"output, $Q_L \\approx {QL:.0f}$", ha="left")
     # lattice-constant dimension between two mirror holes
     for xe in (xs[1], xs[2]):
         ax.plot([xe, xe], [yc - 0.16, 0.38], color="#777777", lw=0.5)
@@ -189,68 +194,88 @@ def panel_zoom(ax):
 
 
 def panel_b(ax):
+    """Level structure of the SnV- with all transitions used by the
+    readout model (not to scale; energy axis broken twice)."""
     ax.axis("off")
-    x0, x1 = 0.14, 0.64
-    yC = 0.88; y1 = 0.13; y2 = 0.29
-    # levels: the |up> line starts to the right so the C1 arrow does not
-    # cross it
-    ax.plot([x0, x1], [yC, yC], color="k", lw=1.1)
-    ax.plot([x0, x1], [y1, y1], color="k", lw=1.1)
-    ax.plot([0.345, x1], [y2, y2], color="k", lw=1.1)
-    for y, lab in ((yC, "$|C\\rangle$"), (y1, "$|\\!\\downarrow\\rangle$"),
-                   (y2, "$|\\!\\uparrow\\rangle$")):
-        ax.text(x1 + 0.02, y, lab, fontsize=8, va="center")
-    # qubit splitting bracket next to the |up> line start
-    ax.annotate("", xy=(0.44, y2), xytext=(0.44, y1),
-                arrowprops=dict(arrowstyle="<->", lw=0.7,
-                                mutation_scale=6))
-    ax.text(0.46, (y1+y2)/2, "$\\omega_q$", fontsize=7, ha="left",
-            va="center")
-    # spin-conserving C1 (cavity-enhanced), clear of the |up> line
-    ax.add_patch(FancyArrowPatch((0.195, y1), (0.195, yC),
-                 arrowstyle="<|-|>", mutation_scale=8, lw=1.4,
-                 color=OI["vermilion"]))
-    ax.text(0.175, 0.56, "C$_1$", fontsize=7.5, color=OI["vermilion"],
-            ha="right")
-    # cavity line profile beside C1
-    yy = np.linspace(0.53, 0.84, 120)
-    lor = 0.075 / (1 + ((yy - 0.67) / 0.085) ** 2)
-    ax.plot(0.395 + lor, yy, color=OI["green"], lw=1.2)
-    ax.text(0.36, 0.41, "cavity", fontsize=6.5, ha="center",
-            color=OI["green"])
-    ax.text(0.36, 0.32, "$F_C = 19$", fontsize=6.5, ha="center",
-            color=OI["green"])
-    # weak spin-flipping C2
-    ax.add_patch(FancyArrowPatch((0.54, y2), (0.54, yC), arrowstyle="-|>",
-                 mutation_scale=7, lw=1.0, color=OI["grey"],
-                 linestyle=(0, (3, 2))))
-    ax.text(0.565, 0.50, "C$_2$ (weak,\n$\\propto 1/\\Lambda_0$)",
-            fontsize=6.8, color=OI["grey"])
-    ax.text(0.5, 0.0,
-            "$\\gamma_{\\rm cav}=\\zeta\\gamma \\ll \\omega_q$:"
-            " readout stays spin-selective",
-            fontsize=6.8, ha="center")
-    ax.set_xlim(0, 1); ax.set_ylim(-0.03, 1)
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+    xl, xr = 0.13, 0.72
+    yD, yU, yUG = 0.06, 0.17, 0.33          # |dn>, |up>, upper ground
+    yA, yB, yUE = 0.66, 0.77, 0.95          # |A>, |B>, upper excited
+    for y in (yD, yU, yA, yB):
+        ax.plot([xl, xr], [y, y], color="k", lw=1.0)
+    for y in (yUG, yUE):
+        ax.plot([xl, xr], [y, y], color="#777777", lw=0.8, ls=(0, (4, 2)))
+    lab = {yD: "$|\\!\\downarrow\\rangle$", yU: "$|\\!\\uparrow\\rangle$",
+           yA: "$|A\\rangle$", yB: "$|B\\rangle$"}
+    for y, t in lab.items():
+        ax.text(xr + 0.02, y, t, fontsize=7.5, va="center")
+    ax.text(xr + 0.02, yUG, "upper\nground", fontsize=6.5, va="center",
+            color="#555555", linespacing=0.95)
+    ax.text(xr + 0.02, yUE, "upper\nexcited", fontsize=6.5, va="center",
+            color="#555555", linespacing=0.95)
+    # splittings (left side): omega_q and Delta_g stacked, omega_e
+    for (ya, yb, t, c) in ((yD, yU, "$\\omega_q$", "k"),
+                           (yA, yB, "$\\omega_e$", "k"),
+                           (yU, yUG, "$\\Delta_g$", "#555555")):
+        ax.annotate("", xy=(0.075, yb), xytext=(0.075, ya),
+                    arrowprops=dict(arrowstyle="<->", lw=0.6, color=c,
+                                    mutation_scale=5, shrinkA=0, shrinkB=0))
+        ax.text(0.06, (ya + yb) / 2, t, fontsize=7, ha="right", va="center",
+                color=c)
+    # transitions
+    def arrow(x, y0, y1, color, lw, ls="-", style="-|>"):
+        ax.add_patch(FancyArrowPatch((x, y0), (x, y1), arrowstyle=style,
+                     mutation_scale=6, lw=lw, color=color, linestyle=ls,
+                     shrinkA=0, shrinkB=0))
+    arrow(0.20, yD, yA, OI["vermilion"], 1.5, style="<|-|>")
+    arrow(0.33, yU, yB, OI["blue"], 1.1)
+    arrow(0.45, yU, yA, OI["grey"], 0.8, ls=(0, (2, 1.5)))
+    arrow(0.55, yD, yB, OI["grey"], 0.8, ls=(0, (2, 1.5)))
+    arrow(0.65, yA, yUG, "#777777", 0.7, ls=(0, (1, 1.2)))
+    for x, t, c in ((0.20, "A1", OI["vermilion"]), (0.33, "B2", OI["blue"]),
+                    (0.45, "A2", "#666666"), (0.55, "B1", "#666666"),
+                    (0.65, "D", "#666666")):
+        ax.text(x + 0.012, 0.50 if t != "D" else 0.55, t, fontsize=6.8,
+                color=c, ha="left", va="center")
 
 
 def panel_c(ax):
-    L0 = np.array(frl["Lambda0"])
-    ax.semilogx(L0, 100*np.array(frl["cavity"]), color=OI["green"], lw=1.5)
-    ax.fill_between(L0, 100*np.array(frl["confocal_002"]),
-                    100*np.array(frl["confocal_004"]), color=OI["grey"],
-                    alpha=0.45, lw=0)
-    ax.plot([2244], [87.4], "o", ms=4, color=OI["vermilion"])
-    ax.text(60, 90.0, "this design", color=OI["green"], fontsize=6.5)
-    ax.text(700, 63.5, "confocal", color="#777777", fontsize=6.5,
-            ha="center")
-    ax.text(2244, 80.5, "measured", color=OI["vermilion"], fontsize=6.5,
-            ha="center", va="top")
-    ax.set_xlabel("bare cyclicity $\\Lambda_0$", fontsize=8)
-    ax.set_ylabel("$F_r$ (%)", fontsize=8)
-    ax.set_ylim(48, 103)
-    ax.annotate("98.5% in 0.1 µs", xy=(2244, 98.5), xytext=(9, 68),
-                fontsize=7, arrowprops=dict(arrowstyle="->", lw=0.6))
-
+    """Optical spectrum around A1 at the reference operating point."""
+    rr = json.load(open(RES / "readout_rev.json"))["reference"]
+    lv = rr["levels"]
+    g_cav = rr["budget"]["gamma_GHz"]
+    g0 = 1.0 / (2 * np.pi * 4.5)
+    S = np.array(lv["S_rel"])
+    pos = {"A1": 0.0, "B2": lv["dA1B2"], "A2": lv["dA1A2"],
+           "B1": lv["dA1B1"]}
+    stren = {"A1": S[0][0], "B2": S[1][1], "A2": S[1][0], "B1": S[0][1]}
+    col = {"A1": OI["vermilion"], "B2": OI["blue"], "A2": OI["grey"],
+           "B1": OI["grey"]}
+    x = np.linspace(-5.2, 5.6, 4000)
+    for k in ("A1", "B2", "A2", "B1"):
+        L = stren[k] / (1 + (2 * (x - pos[k]) / g_cav) ** 2)
+        ax.semilogy(x, L, color=col[k], lw=1.1 if k in ("A1", "B2") else 0.8)
+    Lb = stren["B2"] / (1 + (2 * (x - pos["B2"]) / g0) ** 2)
+    ax.semilogy(x, Lb, color=OI["blue"], lw=0.8, ls=(0, (1.5, 1.2)))
+    ax.axvline(0.0, color="k", lw=0.5, ls=(0, (3, 2)))
+    leak = stren["B2"] / (1 + (2 * pos["B2"] / g_cav) ** 2)
+    ax.plot([0], [leak], "o", ms=3, color=OI["blue"])
+    ax.set_ylim(2e-6, 4)
+    ax.set_xlim(-5.2, 5.6)
+    ax.set_xlabel("detuning from A1 (GHz)")
+    ax.set_ylabel("rel. excitation")
+    ax.set_yticks([1e-4, 1e-2, 1])
+    ax.set_xticks([-4, -2, 0, 2, 4])
+    for k in ("A2", "B1"):
+        ax.text(pos[k], 4e-3, k, fontsize=6.5, ha="center", va="bottom",
+                color="#666666")
+    ax.text(1.15, 1.2, "B2", fontsize=6.5, ha="left", va="center",
+            color=OI["blue"])
+    ax.text(-0.45, 1.2, "A1", fontsize=6.5, ha="right", va="center",
+            color=OI["vermilion"])
+    ax.annotate("dark-state\nleak", xy=(-0.05, leak), xytext=(-3.3, 0.25),
+                fontsize=6.3, ha="center", va="center", linespacing=0.95,
+                arrowprops=dict(arrowstyle="->", lw=0.5, shrinkB=2))
 
 
 fig = plt.figure(figsize=(DOUBLE, 2.40))
@@ -258,14 +283,18 @@ gs = fig.add_gridspec(1, 2, width_ratios=[1.8, 1], wspace=0.20,
                       left=0.005, right=0.985, top=0.945, bottom=0.115)
 gsl = gs[0, 0].subgridspec(3, 1, height_ratios=[1.0, 0.44, 0.92],
                            hspace=0.10)
-gsr = gs[0, 1].subgridspec(2, 1, height_ratios=[1.05, 1], hspace=0.42)
+gsr = gs[0, 1].subgridspec(2, 1, height_ratios=[1.45, 0.75], hspace=0.38)
 axa1 = fig.add_subplot(gsl[0]); panel_top(axa1); axa1.set_anchor("W")
 axa2 = fig.add_subplot(gsl[1]); panel_side(axa2); axa2.set_anchor("W")
 axa3 = fig.add_subplot(gsl[2]); panel_zoom(axa3); axa3.set_anchor("W")
 axa1.text(-0.005, 1.06, "(a)", transform=axa1.transAxes,
           fontweight="bold", fontsize=9, va="bottom")
-axb = fig.add_subplot(gsr[0]); panel_b(axb); panel_label(axb, "(b)", dx=-0.06)
-axc = fig.add_subplot(gsr[1]); panel_c(axc); panel_label(axc, "(c)", dx=-0.28)
+axb = fig.add_subplot(gsr[0]); panel_b(axb); panel_label(axb, "(b)", dx=-0.02, dy=1.03)
+axc = fig.add_subplot(gsr[1]); panel_c(axc)
+fig.canvas.draw()
+_p = axc.get_position()
+fig.text(_p.x0 - 0.085, _p.y1 + 0.035, "(c)", fontweight="bold", fontsize=9,
+         ha="left", va="bottom")
 fig.savefig(HERE / "fig1_device.pdf")
 fig.savefig(HERE / "fig1_device.png")
 print("saved fig1_device")
