@@ -101,13 +101,16 @@ for k in sorted(fd):
 r["__FDTDrows"] = "\n".join(rows)
 if "N0_r50" in fd and "N0_r40" in fd:
     a40, a50 = fd["N0_r40"], fd["N0_r50"]
+    dq = 100 * (a50["Q_L"] / a40["Q_L"] - 1)
+    dfc = 100 * (a50["F_cav"] / a40["F_cav"] - 1)
     r["__FDTDconvsentence"] = (
         f"Increasing the resolution from 40 to 50~pixels/\\textmu m for "
-        f"$N_{{\\mathrm{{out}}}} = 0$ changes $Q_L$ from {a40['Q_L']:.0f} to "
-        f"{a50['Q_L']:.0f}, $F_{{\\mathrm{{cav}}}}$ from {a40['F_cav']:.0f} to "
-        f"{a50['F_cav']:.0f}, the waveguide-coupled fraction from "
+        f"$N_{{\\mathrm{{out}}}} = 0$ changes $Q_L$ by ${dq:+.1f}$\\% "
+        f"({a40['Q_L']:.0f} to {a50['Q_L']:.0f}), $F_{{\\mathrm{{cav}}}}$ by "
+        f"${dfc:+.1f}$\\% and the waveguide-coupled fraction from "
         f"{100*a40['frac_TE0']:.1f}\\% to {100*a50['frac_TE0']:.1f}\\%, and "
-        f"the resonance from {a40['lambda_nm']:.1f} to {a50['lambda_nm']:.1f}~nm.")
+        f"shifts the resonance from {a40['lambda_nm']:.1f} to "
+        f"{a50['lambda_nm']:.1f}~nm.")
 else:
     r["__FDTDconvsentence"] = ""
 a0 = fd["N0_r40"]
