@@ -6,8 +6,8 @@ Physics against measured or analytic references
  V1  material dispersion vs published values at 619 nm
  V2  SnV zero-field splittings vs measurement (closed form + diagonalisation)
  V3  qubit frequency at the in-plane readout geometry (zeta = 147 deg, 125 mT)
- V4  cyclicity at the minimum-alignment angle (zeta = 53 deg, 180 mT)
- V5  cyclicity at 9 deg misalignment (180 mT) vs the measured maximum
+ V4  cyclicity at the minimum-alignment angle (zeta = 53 deg; model at 180 mT)
+ V5  cyclicity at 9 deg misalignment (model at 180 mT) vs the measured maximum
  V6  spin-flip strength vanishes for a perfectly aligned field
  V7  perturbative qubit frequency (Eq. B9 of PRX 13, 031022) vs diagonalisation
 Numerics (convergence, passivity, identities, limits)
@@ -82,7 +82,7 @@ put("V3", rel(fq, 3.677) < 0.02,
 # ------------------------------------------------------------------ V4
 c53 = snv.cyclicity(snv.b_lab(53.0, 0.180))
 put("V4", rel(c53, 8.6) < 0.10,
-    "measured 8.6 +/- 0.4 at zeta = 53 deg, 180 mT; tolerance 10%",
+    "measured 8.6 +/- 0.4 at zeta = 53 deg (|B| not stated; model at 180 mT, <1% change for 112-180 mT); tolerance 10%",
     value=c53, target=8.6)
 
 # ------------------------------------------------------------------ V5
@@ -92,7 +92,7 @@ e1 = np.cross(mu, [0, 0, 1.0]); e1 /= np.linalg.norm(e1)
 B9 = 0.180 * (np.cos(np.deg2rad(9)) * mu + np.sin(np.deg2rad(9)) * e1)
 c9 = snv.cyclicity(B9)
 put("V5", rel(c9, 2244.0) < 0.10,
-    "measured 2244 +/- 108 at 180 mT (reported misalignment ~10 deg)",
+    "measured 2244 +/- 108 at zeta = 147 deg (reported misalignment ~10 deg; model at 180 mT)",
     value=c9, target=2244.0)
 
 # ------------------------------------------------------------------ V6

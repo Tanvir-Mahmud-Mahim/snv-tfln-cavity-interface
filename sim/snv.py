@@ -40,9 +40,12 @@ Parameter values: Table I of the same paper (device values):
 Validation targets (measured):
   * Rosenthal et al. 2023: Delta_g/2pi = 903 GHz (PL);
     qubit frequency vs field-angle sweep; Rabi ~ MHz-scale at b ~ mT.
-  * Rosenthal et al., arXiv:2403.13110: at |B| = 180 mT cyclicity
+  * Rosenthal et al., PRX 14, 041008 (2024): cyclicity
     Lambda = 2244 +/- 108 at zeta = 147 deg and 8.6 +/- 0.4 at
-    zeta = 53 deg; qubit frequency 3.677 GHz at |B| = 125 mT;
+    zeta = 53 deg (field magnitude not stated; the model cyclicity
+    changes by <1% between 112 and 180 mT, and 180 mT is used, the
+    field of that work's angle-resolved spectroscopy);
+    qubit frequency 3.677 GHz at |B| = 125 mT;
     Rabi frequency 6.25 MHz (80 ns pi pulse) at b ~ 0.6 mT.
 
 All frequencies are angular frequencies over 2pi in GHz (i.e. H/(h)) so
