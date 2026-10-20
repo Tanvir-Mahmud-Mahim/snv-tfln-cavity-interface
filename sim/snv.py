@@ -30,7 +30,10 @@ Parameter values: Table I of the same paper (device values):
   Delta_e/2pi = 3000 GHz,   Ups_e/2pi = 134.00 GHz, lam_e/2pi = 2988.0 GHz
   gL_g = 0.363, gL_e = 0.581 -> f_g = 0.171, f_e = 0.073,
   delta_g = 0.0152, delta_e = 0.1761;  theta = 125.3 deg (dipole polar
-  angle, fixed), phi = 37.33 deg (fit); ab initio reduction parameters
+  angle, fixed in that work for an SnV- in <100> diamond with the lab z
+  axis normal to the chip) and phi = 37.33 +/- 0.47 deg (dipole azimuth,
+  fitted by Rosenthal et al. to the field-angle spectroscopy of their
+  Fig. 2; both values from their Table I); ab initio reduction parameters
   deltap_g = 0.042, deltap_e = 0.303, p_g = 0.471, p_e = 0.125
   (Thiering & Gali, Phys. Rev. X 8, 021063 (2018)).
 

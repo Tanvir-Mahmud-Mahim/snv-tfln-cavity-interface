@@ -3,10 +3,14 @@
 All mode solving uses femwell (vector FEM Maxwell mode solver on scikit-fem)
 with gmsh meshes.  Geometry follows the heterogeneous diamond / thin-film
 lithium-niobate platform of Riedel et al., "Efficient photonic integration
-of diamond color centers and thin-film lithium niobate," (2023),
-arXiv:2306.15207 / doi:10.1364/OPTICAQ.1.000103: diamond nanobeams of
-~200 nm thickness with tapered ends (350 nm -> 50 nm over ~10 um in their
-SiV design) placed on a LN-on-insulator chip with a 190-nm LN film on SiO2.
+of diamond color centers and thin-film lithium niobate," ACS Photonics 10,
+4236-4243 (2023), doi:10.1021/acsphotonics.3c00992 (arXiv:2306.15207):
+diamond nanobeams of ~200 nm thickness with tapered ends (350 nm -> 50 nm
+in their SiV design) placed on a LN-on-insulator chip whose LN waveguides
+are ~190-nm-high ridges on a ~60-nm residual slab.  The studies below use
+a fully etched 190-nm ridge on SiO2 as the nominal geometry; the partially
+etched ridge of Riedel et al. and sloped sidewalls are evaluated in
+taper_tolerance.py (revision 1).
 Here the target wavelength is the SnV zero-phonon line at 619 nm instead of
 the SiV line at 737 nm, so widths are re-optimised for single-mode
 operation at 619 nm.
@@ -15,7 +19,7 @@ Studies
 -------
 A.  Diamond nanobeam (t = 200 nm) on SiO2: n_eff versus width -> choice of
     the single-mode cavity-waveguide width.
-B.  TFLN ridge (t = 190 nm) on SiO2: n_eff versus width -> choice of the
+B.  TFLN ridge (height 190 nm, fully etched) on SiO2: n_eff versus width -> choice of the
     LN bus-waveguide width.
 C.  Hybrid cross-section (diamond beam on top of the LN ridge): supermode
     effective indices versus diamond width -> adiabatic-transfer
@@ -50,7 +54,7 @@ N_LN_E = float(materials.linbo3_e.n(LAM))
 N_SIO2 = float(materials.silica.n(LAM))
 
 T_DIA = 0.200    # diamond nanobeam thickness (Riedel et al.: ~200 nm)
-T_LN = 0.190     # LN film thickness (Riedel et al.: 190 nm)
+T_LN = 0.190     # LN ridge height (Riedel et al.: ~190-nm ridge on ~60-nm slab)
 
 
 def _solve(shapes: OrderedDict, eps_map: dict, resolutions: dict,
