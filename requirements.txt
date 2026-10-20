@@ -9,3 +9,6 @@ scikit-fem==12.0.2
 shapely==2.1.2
 gmsh==4.15.2
 meshio==5.3.5
+h5py==3.16.0
+# Meep 1.36 with MPB (FDTD of the loaded cavity) is not on PyPI:
+# conda install -c conda-forge pymeep, or see sim/BUILD_MEEP.md
