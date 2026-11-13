@@ -1,6 +1,7 @@
 # Fast Single-Shot Readout of Tin-Vacancy Spins: details
 
-This file has the full notes for version 2.0.1 (revised manuscript). For
+This file has the full notes for version 2.0.2 (article accepted in
+Optics Express, in press, https://doi.org/10.1364/OE.618386). For
 the overview, installation and quick start, see [README.md](README.md).
 
 ## Contents
@@ -289,6 +290,7 @@ own result, and the last line gives the number passed.
 
 | Version | Date | Main change | Archive DOI |
 |---|---|---|---|
+| v2.0.2 | 2026-11-13 | Article accepted for publication in Optics Express, in press (https://doi.org/10.1364/OE.618386): citation, CITATION.cff and .zenodo.json updated; no code change | https://doi.org/10.5281/zenodo.23507013 (v2.0.0 code, same results) |
 | v2.0.1 | 2026-10-20 | Figure labels moved clear of the data (Figs. 1, 4, 5) and panel letters aligned; descriptions of checks V4 and V5 state that the source gives no field magnitude for the measured cyclicities; no change in any result | https://doi.org/10.5281/zenodo.23507013 (v2.0.0 code, same results) |
 | v2.0.0 | 2026-10-20 | Revised manuscript: four-level readout model, 3D FDTD of the loaded cavity, taper tolerances, measured efficiencies, 17-check testbench; superseded two-level model removed | https://doi.org/10.5281/zenodo.23507013 |
 | v1.1.1 | 15 Sep 2026 | Figures resized to the full text width | https://doi.org/10.5281/zenodo.22758086 |

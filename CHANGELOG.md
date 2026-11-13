@@ -3,6 +3,18 @@
 All notable changes to this code are listed here, newest first. Entries
 for v1.x are taken from the git history and tags.
 
+## v2.0.2 (2026-11-13)
+
+Documentation only; no code or result changes.
+
+- The article is accepted for publication in Optics Express (in press);
+  its DOI is registered: https://doi.org/10.1364/OE.618386.
+- `README.md`: full citation of the article and of the Zenodo archive,
+  BibTeX entry, article DOI badge.
+- `CITATION.cff`: version 2.0.2; the preferred citation now carries the
+  article DOI (status in-press until volume and pages are assigned).
+- `.zenodo.json`: the archive is marked as a supplement to the article.
+
 ## v2.0.1 (2026-10-20)
 
 Presentation fixes only; every number, figure curve and check result is

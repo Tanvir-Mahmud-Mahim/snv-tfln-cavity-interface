@@ -1,15 +1,17 @@
 # Fast Single-Shot Readout of Tin-Vacancy Spins: Design and Simulation Code
 
 [![Data DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23507013.svg)](https://doi.org/10.5281/zenodo.23507013)
+[![Article DOI](https://img.shields.io/badge/Optics_Express-10.1364%2FOE.618386-blue.svg)](https://doi.org/10.1364/OE.618386)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 This repository holds the code for our article **"Fast single-shot readout
 of tin-vacancy spins with an overcoupled diamond nanocavity on thin-film
 lithium niobate"**, which I wrote with M. M. Rahman and A. S. M. Mohsin
-(BRAC University). It has been submitted to Optics Express (2026); this
-version (v2.0.1) belongs to the revised manuscript (revision 1). The Zenodo
-archive holds v2.0.0, which differs only in figure label positions and
-check descriptions and gives identical results.
+(BRAC University), accepted for publication in Optics Express (2026, in
+press): https://doi.org/10.1364/OE.618386. This version (v2.0.2) is the code
+of the accepted article. The Zenodo archive holds v2.0.0, which differs only in
+figure label positions, check descriptions and documentation and gives
+identical results.
 
 - Repository: https://github.com/Tanvir-Mahmud-Mahim/snv-tfln-cavity-interface
 - Archive on Zenodo (raw simulation outputs, the validation testbench with
@@ -194,9 +196,27 @@ Please cite the article and the Zenodo archive. GitHub also shows a
 
 > T. M. Mahim, M. M. Rahman, and A. S. M. Mohsin, "Fast single-shot readout
 > of tin-vacancy spins with an overcoupled diamond nanocavity on thin-film
-> lithium niobate" (submitted to Optics Express, 2026).
+> lithium niobate," Optics Express (2026), in press,
+> https://doi.org/10.1364/OE.618386.
 >
-> Archive: https://doi.org/10.5281/zenodo.23507013
+> T. M. Mahim, M. M. Rahman, and A. S. M. Mohsin, "snv-tfln-cavity-interface:
+> simulation data and validation testbench for an integrated SnV-TFLN
+> spin-photon interface," Zenodo (2026), https://doi.org/10.5281/zenodo.23507013.
+
+```bibtex
+@article{Mahim2026SnVTFLN,
+  author  = {Mahim, Tanvir M. and Rahman, M. Mosaddequr and Mohsin, Abu S. M.},
+  title   = {Fast single-shot readout of tin-vacancy spins with an overcoupled
+             diamond nanocavity on thin-film lithium niobate},
+  journal = {Optics Express},
+  year    = {2026},
+  doi     = {10.1364/OE.618386},
+  url     = {https://doi.org/10.1364/OE.618386}
+}
+```
+
+Volume and page numbers will be added here once the article is assigned
+to an issue.
 
 ---
 
