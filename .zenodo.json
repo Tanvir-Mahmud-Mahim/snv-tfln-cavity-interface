@@ -3,11 +3,34 @@
   "upload_type": "software",
   "license": "Apache-2.0",
   "creators": [
-    {"name": "Mahim, Tanvir M.", "affiliation": "BRAC University"},
-    {"name": "Rahman, M. Mosaddequr", "affiliation": "BRAC University"},
-    {"name": "Mohsin, Abu S. M.", "affiliation": "BRAC University"}
+    {
+      "name": "Mahim, Tanvir M.",
+      "affiliation": "BRAC University"
+    },
+    {
+      "name": "Rahman, M. Mosaddequr",
+      "affiliation": "BRAC University"
+    },
+    {
+      "name": "Mohsin, Abu S. M.",
+      "affiliation": "BRAC University"
+    }
   ],
-  "keywords": ["tin-vacancy center", "diamond nanophotonics",
-    "thin-film lithium niobate", "Purcell enhancement",
-    "single-shot readout", "guided-mode expansion", "open source"]
+  "keywords": [
+    "tin-vacancy center",
+    "diamond nanophotonics",
+    "thin-film lithium niobate",
+    "Purcell enhancement",
+    "single-shot readout",
+    "guided-mode expansion",
+    "open source"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.1364/OE.618386",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    }
+  ]
 }
