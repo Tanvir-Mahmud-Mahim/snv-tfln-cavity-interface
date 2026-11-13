@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software, please cite the article below and the archived version."
 title: "snv-tfln-cavity-interface: open-source design pipeline for an
   integrated SnV-TFLN spin-photon interface"
-version: 2.0.1
-date-released: 2026-10-20
+version: 2.0.2
+date-released: 2026-11-13
 doi: 10.5281/zenodo.23507013
 authors:
   - family-names: Mahim
@@ -28,8 +28,7 @@ preferred-citation:
     - family-names: Mohsin
       given-names: Abu S. M.
   journal: "Optics Express"
+  status: in-press
   year: 2026
   doi: 10.1364/OE.618386
   url: "https://doi.org/10.1364/OE.618386"
-  status: in-press
-  notes: "Accepted 5 November 2026. Volume and pages to be assigned."
