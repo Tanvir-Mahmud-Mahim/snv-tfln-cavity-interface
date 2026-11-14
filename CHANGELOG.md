@@ -3,6 +3,15 @@
 All notable changes to this code are listed here, newest first. Entries
 for v1.x are taken from the git history and tags.
 
+## Unreleased
+
+Documentation only; no code or result changes.
+
+- The article is published (13 November 2026, open access): Optics
+  Express 34(23), 45209–45223 (2026), https://doi.org/10.1364/OE.618386.
+  `README.md` (citation and BibTeX), `CITATION.cff` and `DETAILS.md` now
+  give the volume, issue and pages.
+
 ## v2.0.2 (2026-11-13)
 
 Documentation only; no code or result changes.

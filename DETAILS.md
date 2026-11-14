@@ -1,7 +1,8 @@
 # Fast Single-Shot Readout of Tin-Vacancy Spins: details
 
-This file has the full notes for version 2.0.2 (article accepted in
-Optics Express, in press, https://doi.org/10.1364/OE.618386). For
+This file has the full notes for version 2.0.2 (article published in
+Optics Express 34(23), 45209–45223 (2026),
+https://doi.org/10.1364/OE.618386). For
 the overview, installation and quick start, see [README.md](README.md).
 
 ## Contents

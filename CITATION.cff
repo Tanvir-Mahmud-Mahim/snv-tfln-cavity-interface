@@ -28,7 +28,11 @@ preferred-citation:
     - family-names: Mohsin
       given-names: Abu S. M.
   journal: "Optics Express"
-  status: in-press
+  volume: 34
+  issue: 23
+  start: 45209
+  end: 45223
   year: 2026
+  month: 11
   doi: 10.1364/OE.618386
   url: "https://doi.org/10.1364/OE.618386"

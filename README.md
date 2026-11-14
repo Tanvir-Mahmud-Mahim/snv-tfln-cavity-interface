@@ -7,9 +7,9 @@
 This repository holds the code for our article **"Fast single-shot readout
 of tin-vacancy spins with an overcoupled diamond nanocavity on thin-film
 lithium niobate"**, which I wrote with M. M. Rahman and A. S. M. Mohsin
-(BRAC University), accepted for publication in Optics Express (2026, in
-press): https://doi.org/10.1364/OE.618386. This version (v2.0.2) is the code
-of the accepted article. The Zenodo archive holds v2.0.0, which differs only in
+(BRAC University), published in Optics Express 34(23), 45209–45223 (2026),
+open access: https://doi.org/10.1364/OE.618386. This version (v2.0.2) is the
+code of the article. The Zenodo archive holds v2.0.0, which differs only in
 figure label positions, check descriptions and documentation and gives
 identical results.
 
@@ -196,7 +196,7 @@ Please cite the article and the Zenodo archive. GitHub also shows a
 
 > T. M. Mahim, M. M. Rahman, and A. S. M. Mohsin, "Fast single-shot readout
 > of tin-vacancy spins with an overcoupled diamond nanocavity on thin-film
-> lithium niobate," Optics Express (2026), in press,
+> lithium niobate," Optics Express 34(23), 45209–45223 (2026),
 > https://doi.org/10.1364/OE.618386.
 >
 > T. M. Mahim, M. M. Rahman, and A. S. M. Mohsin, "snv-tfln-cavity-interface:
@@ -209,14 +209,14 @@ Please cite the article and the Zenodo archive. GitHub also shows a
   title   = {Fast single-shot readout of tin-vacancy spins with an overcoupled
              diamond nanocavity on thin-film lithium niobate},
   journal = {Optics Express},
+  volume  = {34},
+  number  = {23},
+  pages   = {45209--45223},
   year    = {2026},
   doi     = {10.1364/OE.618386},
   url     = {https://doi.org/10.1364/OE.618386}
 }
 ```
-
-Volume and page numbers will be added here once the article is assigned
-to an issue.
 
 ---
 
